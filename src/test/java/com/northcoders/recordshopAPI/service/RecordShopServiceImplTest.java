@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -49,5 +50,16 @@ class RecordShopServiceImplTest {
         assertEquals("Nirvana", resultList.get(0).getArtist().getName());
         assertEquals("Owls", resultList.get(1).getArtist().getName());
         assertEquals("Britney Spears", resultList.get(2).getArtist().getName());
+    }
+
+    @Test
+    void getAllInStockItems(){
+        Map<Album, Integer> inStockAlbums = Map.of(
+                new Album("Nevermind", new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK ), 1,
+                new Album("Owls", new Artist("Owls"), LocalDate.now(), Album.Genre.JAZZ ), 4,
+                new Album("One More Time", new Artist("Britney Spears"), LocalDate.now(), Album.Genre.POP ), 2
+        );
+
+        when(mockAlbumRepository)
     }
 }
