@@ -61,8 +61,6 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.albumId == 2)].name").value("Owls"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.albumId == 3)].name").value("One More Time"));
 
-        System.out.println(albumList.get(1));
-
         verify(mockService, times(1)).getAllAlbums();
 
 

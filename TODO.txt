@@ -1,0 +1,10 @@
+Define user stories to dictate which endpoints are needed
+    the end points will then define the service methods needed
+    this will also define any custom repository methods needed
+    will need to look into custom methods that join tables and
+    figure out where they need to live
+
+add some customisation to /health
+    (maybe use a cleaner endpoint /api/v1/recordstore/health that redirects)
+
+ 
