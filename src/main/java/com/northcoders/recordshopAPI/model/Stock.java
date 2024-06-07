@@ -8,25 +8,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Record {
+public class Stock {
 
     @Id
     @GeneratedValue
     private long id;
 
     @NotNull
-    private String name;
+    private long recordId;
 
     @NotNull
-    private Artist artist;
+    private double price;
 
-    private int yearOfRelease;
-
-
+    @NotNull
+    private int numberInStock;
 }
