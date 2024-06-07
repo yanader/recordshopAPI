@@ -1,6 +1,7 @@
 package com.northcoders.recordshopAPI.service;
 
 import com.northcoders.recordshopAPI.model.Album;
+import com.northcoders.recordshopAPI.model.AlbumStockDTO;
 import com.northcoders.recordshopAPI.model.Artist;
 import com.northcoders.recordshopAPI.repository.AlbumRepository;
 import com.northcoders.recordshopAPI.repository.ArtistRepository;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RecordShopServiceImplTest {
@@ -54,12 +55,27 @@ class RecordShopServiceImplTest {
 
     @Test
     void getAllInStockItems(){
-        Map<Album, Integer> inStockAlbums = Map.of(
-                new Album("Nevermind", new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK ), 1,
-                new Album("Owls", new Artist("Owls"), LocalDate.now(), Album.Genre.JAZZ ), 4,
-                new Album("One More Time", new Artist("Britney Spears"), LocalDate.now(), Album.Genre.POP ), 2
+        List<AlbumStockDTO> inStockAlbums = List.of(
+                new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2 ),
+                new AlbumStockDTO(2L,"Owls", "Owls", 4),
+                new AlbumStockDTO(3L, "One More Time", "Britney Spears", 1)
         );
 
-        when(mockAlbumRepository)
+        when(mockAlbumRepository.findAlbumsInStock()).thenReturn(inStockAlbums);
+
+        List<AlbumStockDTO> resultList = service.getAllInStockAlbums();
+
+        assertAll(() -> {
+            assertEquals(3, resultList.size());
+            assertEquals("Nirvana", resultList.get(0).getArtistName());
+            assertEquals("Owls", resultList.get(1).getArtistName());
+            assertEquals("Britney Spears", resultList.get(2).getArtistName());
+
+            assertTrue(resultList.get(0).getQuantity() > 0);
+            assertTrue(resultList.get(1).getQuantity() > 0);
+            assertTrue(resultList.get(2).getQuantity() > 0);
+        });
+        verify(mockAlbumRepository, times(1)).findAlbumsInStock();
+
     }
 }

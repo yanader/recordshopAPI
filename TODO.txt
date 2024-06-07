@@ -7,3 +7,16 @@ Define user stories to dictate which endpoints are needed
 add some customisation to /health
     (maybe use a cleaner endpoint /api/v1/recordstore/health that redirects)
 
+User Stories (reference from resources/*.png
+
+            REPOSITORY      SERVICE     CONTROLLER
+INIT        DONE            DONE        DONE
+ONE         DONE            DONE        DONE
+TWO
+THREE
+FOUR
+FIVE
+SIX
+SEVEN
+EIGHT
+NINE

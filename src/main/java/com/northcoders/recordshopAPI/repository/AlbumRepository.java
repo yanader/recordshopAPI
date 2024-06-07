@@ -1,6 +1,7 @@
 package com.northcoders.recordshopAPI.repository;
 
 import com.northcoders.recordshopAPI.model.Album;
+import com.northcoders.recordshopAPI.model.AlbumStockDTO;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -11,14 +12,10 @@ import java.util.Map;
 @Repository
 public interface AlbumRepository extends CrudRepository<Album, Integer> {
 
-    @Query("""
-            SELECT al.name, ar.name, s.number_in_stock
-            FROM album al
-            JOIN artist ar on ar.artist_id = al.artist_id
-            JOIN stock s on s.album_id = al.album_id
-            WHERE s.quantity > 0;
-            """)
-    Map<AlbumStockDTO> findAlbumsInStock();
+    @Query("SELECT new com.northcoders.recordshopAPI.model.AlbumStockDTO(al.albumId, al.name, ar.name, s.numberInStock) " +
+            "FROM Album al JOIN al.artist ar JOIN Stock s ON s.albumId = al.albumId " +
+            "WHERE s.numberInStock > 0")
+    List<AlbumStockDTO> findAlbumsInStock();
 }
 
 

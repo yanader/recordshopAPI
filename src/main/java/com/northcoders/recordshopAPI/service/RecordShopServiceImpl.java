@@ -1,6 +1,7 @@
 package com.northcoders.recordshopAPI.service;
 
 import com.northcoders.recordshopAPI.model.Album;
+import com.northcoders.recordshopAPI.model.AlbumStockDTO;
 import com.northcoders.recordshopAPI.repository.AlbumRepository;
 import com.northcoders.recordshopAPI.repository.ArtistRepository;
 import com.northcoders.recordshopAPI.repository.StockRepository;
@@ -27,5 +28,10 @@ public class RecordShopServiceImpl implements RecordShopService{
         List<Album> albumList = new ArrayList<>();
         albumRepository.findAll().forEach(albumList::add);
         return albumList;
+    }
+
+    @Override
+    public List<AlbumStockDTO> getAllInStockAlbums() {
+        return new ArrayList<>(albumRepository.findAlbumsInStock());
     }
 }
