@@ -25,7 +25,7 @@ public class Album {
     private Artist artist;
 
     private int yearOfRelease;
-    
+
     private Genre genre;
 
 
