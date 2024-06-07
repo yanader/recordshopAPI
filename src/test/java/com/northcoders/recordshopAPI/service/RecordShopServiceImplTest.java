@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -56,9 +57,9 @@ class RecordShopServiceImplTest {
     @Test
     void getAllInStockItems(){
         List<AlbumStockDTO> inStockAlbums = List.of(
-                new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2 ),
-                new AlbumStockDTO(2L,"Owls", "Owls", 4),
-                new AlbumStockDTO(3L, "One More Time", "Britney Spears", 1)
+                new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2 , 12.99),
+                new AlbumStockDTO(2L,"Owls", "Owls", 4, 14.99),
+                new AlbumStockDTO(3L, "One More Time", "Britney Spears", 1, 24.99)
         );
 
         when(mockAlbumRepository.findAlbumsInStock()).thenReturn(inStockAlbums);
@@ -76,6 +77,26 @@ class RecordShopServiceImplTest {
             assertTrue(resultList.get(2).getQuantity() > 0);
         });
         verify(mockAlbumRepository, times(1)).findAlbumsInStock();
-
     }
+
+//    @Test
+//    void getalbumByIdWhenGivenValidId() {
+//        Optional<Album> optionalAlbum = Optional.of(new Album("Nevermind", new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK));
+//
+//        when(mockAlbumRepository.findById(1)).thenReturn(optionalAlbum);
+//
+//        Optional<Album> actualOptional = service.getAlbumById(1);
+//        Album actualAlbum = actualOptional.get();
+//
+//        assertAll(() -> {
+//            assertEquals("Nevermind", actualAlbum.getName());
+//            assertEquals("Nirvana", actualAlbum.getArtist().getName());
+//            assertEquals(Album.Genre.ROCK, actualAlbum.getName());
+//        });
+//
+//        verify(mockAlbumRepository, times(1)).findById(1);
+//
+//    }
+
+
 }

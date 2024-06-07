@@ -10,4 +10,5 @@ public class AlbumStockDTO {
     String albumName;
     String artistName;
     int quantity;
+    double priceInPounds;
 }

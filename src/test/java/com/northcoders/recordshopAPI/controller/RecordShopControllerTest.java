@@ -68,9 +68,9 @@ class RecordShopControllerTest {
     @Test
     void getALlInStockAlbums() throws Exception {
         List<AlbumStockDTO> inStockAlbums = List.of(
-                new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2 ),
-                new AlbumStockDTO(2L,"Owls", "Owls", 4),
-                new AlbumStockDTO(3L, "One More Time", "Britney Spears", 1)
+                new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2, 10.99 ),
+                new AlbumStockDTO(2L,"Owls", "Owls", 4, 12.99),
+                new AlbumStockDTO(3L, "One More Time", "Britney Spears", 1, 24.99)
         );
 
         when(mockService.getAllInStockAlbums()).thenReturn(inStockAlbums);

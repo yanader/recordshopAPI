@@ -22,7 +22,7 @@ public class Stock {
     private long albumId;
 
     @NotNull
-    private double price;
+    private int priceInPence;
 
     @NotNull
     private int numberInStock;

@@ -12,7 +12,7 @@ User Stories (reference from resources/*.png
             REPOSITORY      SERVICE     CONTROLLER
 INIT        DONE            DONE        DONE
 ONE         DONE            DONE        DONE
-TWO
+TWO         DONE
 THREE
 FOUR
 FIVE
