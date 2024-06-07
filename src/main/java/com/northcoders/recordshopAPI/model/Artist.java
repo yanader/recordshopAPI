@@ -19,6 +19,7 @@ public class Artist {
     @NotNull
     private String name;
 
-
+    @ElementCollection
+    @OneToMany(mappedBy="artist")
     private List<Album> discography;
 }
