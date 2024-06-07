@@ -126,6 +126,11 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.status().reason("No album with id 1 exists"));
 
         verify(mockService, times(1)).getAlbumDTOById(1);
-
     }
+
+    /* Next tests are endpoint tests for POSTing a new album
+        test works with full request body
+        test works with minimal test body
+        test rejects with missing fields
+     */
 }

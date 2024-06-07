@@ -17,7 +17,7 @@ THREE
 FOUR
 FIVE
 SIX
-SEVEN       DONE                                        DONE
+SEVEN       DONE            DONE                        DONE0.5
 EIGHT
 NINE
 
