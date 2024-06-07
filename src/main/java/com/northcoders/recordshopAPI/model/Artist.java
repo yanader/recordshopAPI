@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,4 +23,9 @@ public class Artist {
     @ElementCollection
     @OneToMany(mappedBy="artist")
     private List<Album> discography;
+
+    public Artist(String name) {
+        this.name = name;
+        this.discography = new ArrayList<>();
+    }
 }

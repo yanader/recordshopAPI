@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -34,9 +36,16 @@ public class Album {
     @JoinColumn(name = "artistId")
     private Artist artist;
 
-    private int yearOfRelease;
+    private LocalDate releaseDate;
 
     private Genre genre;
+
+    public Album(String name, Artist artist, LocalDate releaseDate, Genre genre) {
+        this.name = name;
+        this.artist = artist;
+        this.releaseDate = releaseDate;
+        this.genre = genre;
+    }
 
 
 }
