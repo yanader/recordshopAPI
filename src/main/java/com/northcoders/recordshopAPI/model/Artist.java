@@ -20,5 +20,5 @@ public class Artist {
     private String name;
 
 
-    private List<Record> discography;
+    private List<Album> discography;
 }

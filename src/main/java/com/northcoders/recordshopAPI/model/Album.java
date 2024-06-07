@@ -6,17 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Record {
+public class Album {
 
     @Id
     @GeneratedValue
-    private long recordId;
+    private long albumId;
 
     @NotNull
     private String name;
@@ -27,6 +25,8 @@ public class Record {
     private Artist artist;
 
     private int yearOfRelease;
+    
+    private Genre genre;
 
 
 }

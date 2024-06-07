@@ -19,7 +19,7 @@ public class Stock {
     private long stockId;
 
     @NotNull
-    private long recordId;
+    private long albumId;
 
     @NotNull
     private double price;
