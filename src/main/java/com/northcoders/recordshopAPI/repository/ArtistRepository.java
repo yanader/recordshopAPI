@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ArtistItemRepository extends CrudRepository<Artist, Integer> {
+public interface ArtistRepository extends CrudRepository<Artist, Integer> {
 }
