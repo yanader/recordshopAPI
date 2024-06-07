@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RecordShopServiceImpl implements RecordShopService{
@@ -33,5 +34,11 @@ public class RecordShopServiceImpl implements RecordShopService{
     @Override
     public List<AlbumStockDTO> getAllInStockAlbums() {
         return new ArrayList<>(albumRepository.findAlbumsInStock());
+    }
+
+    @Override
+    public AlbumStockDTO getAlbumDTOById(int id) {
+        Optional<AlbumStockDTO> optional = albumRepository.getAlbumDTOById(id);
+        return optional.orElse(null);
     }
 }

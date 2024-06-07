@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -79,24 +78,35 @@ class RecordShopServiceImplTest {
         verify(mockAlbumRepository, times(1)).findAlbumsInStock();
     }
 
-//    @Test
-//    void getalbumByIdWhenGivenValidId() {
-//        Optional<Album> optionalAlbum = Optional.of(new Album("Nevermind", new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK));
-//
-//        when(mockAlbumRepository.findById(1)).thenReturn(optionalAlbum);
-//
-//        Optional<Album> actualOptional = service.getAlbumById(1);
-//        Album actualAlbum = actualOptional.get();
-//
-//        assertAll(() -> {
-//            assertEquals("Nevermind", actualAlbum.getName());
-//            assertEquals("Nirvana", actualAlbum.getArtist().getName());
-//            assertEquals(Album.Genre.ROCK, actualAlbum.getName());
-//        });
-//
-//        verify(mockAlbumRepository, times(1)).findById(1);
-//
-//    }
+    @Test
+    void getalbumByIdWhenGivenValidId() {
+        Optional<AlbumStockDTO> optionalAlbumDTO = Optional.of(new AlbumStockDTO(1L,"Nevermind", "Nirvana", 3, 10.99));
+
+        when(mockAlbumRepository.getAlbumDTOById(1)).thenReturn(optionalAlbumDTO);
+
+        AlbumStockDTO actualAlbum = service.getAlbumDTOById(1);
+
+
+        assertAll(() -> {
+            assertEquals("Nevermind", actualAlbum.getAlbumName());
+            assertEquals("Nirvana", actualAlbum.getArtistName());
+            assertEquals(10.99, actualAlbum.getPriceInPounds());
+        });
+
+        verify(mockAlbumRepository, times(1)).getAlbumDTOById(1);
+    }
+
+    @Test
+    void getAlbumIdWhenGivenInvalidId() {
+        Optional<AlbumStockDTO> optionalAlbumDTO = Optional.empty();
+
+        when(mockAlbumRepository.getAlbumDTOById(1)).thenReturn(optionalAlbumDTO);
+
+        AlbumStockDTO actualAlbum = service.getAlbumDTOById(1);
+
+        assertNull(actualAlbum);
+        verify(mockAlbumRepository, times(1)).getAlbumDTOById(1);
+    }
 
 
 }

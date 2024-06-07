@@ -98,4 +98,35 @@ class RecordShopControllerTest {
 
         verify(mockService, times(1)).getAllInStockAlbums();
     }
+
+    @Test
+    void getAlbumDTOByIdWithValidId() throws Exception{
+        AlbumStockDTO album = new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2, 10.99 );
+
+        when(mockService.getAlbumDTOById(1)).thenReturn(album);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/recordstore/albums/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Nevermind"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Nirvana"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value("2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.priceInPounds").value("10.99"));
+
+        verify(mockService, times(1)).getAlbumDTOById(1);
+    }
+
+    @Test
+    void getAlbumDTOByIdWithInvalidId() throws Exception {
+
+        when(mockService.getAlbumDTOById(1)).thenReturn(null);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordstore/albums/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("No album with id 1 exists"));
+
+        verify(mockService, times(1)).getAlbumDTOById(1);
+
+    }
 }

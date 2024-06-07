@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,6 +33,16 @@ public class RecordShopController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no albums in stock");
         } else {
             return new ResponseEntity<>(inStockAlbums, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(value ="/albums/{id}")
+    public ResponseEntity<AlbumStockDTO> getAlbumDTOById(@PathVariable int id) {
+        AlbumStockDTO album = recordShopService.getAlbumDTOById(id);
+        if (album == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No album with id " + id + " exists");
+        } else {
+            return new ResponseEntity<>(album, HttpStatus.OK);
         }
     }
 }
