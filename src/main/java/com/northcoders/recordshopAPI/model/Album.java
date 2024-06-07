@@ -12,6 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Album {
 
+    public enum Genre {
+        ROCK,
+        COUNTRY,
+        DANCE,
+        SOUL,
+        POP,
+        JAZZ,
+        CLASSICAL
+    }
+
     @Id
     @GeneratedValue
     private long albumId;
