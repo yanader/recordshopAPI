@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface StockRepository extends CrudRepository<Stock, Integer> {
 
-    Optional<Stock> findAllByAlbumId();
+    Optional<Stock> findAllByAlbumId(long id);
 }

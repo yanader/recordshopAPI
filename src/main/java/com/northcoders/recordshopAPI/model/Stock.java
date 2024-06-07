@@ -26,4 +26,10 @@ public class Stock {
 
     @NotNull
     private int numberInStock;
+
+    public Stock(long albumId, int priceInPence, int numberInStock) {
+        this.albumId = albumId;
+        this.priceInPence = priceInPence;
+        this.numberInStock = numberInStock;
+    }
 }

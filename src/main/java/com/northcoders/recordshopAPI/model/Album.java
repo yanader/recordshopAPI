@@ -14,16 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Album {
 
-    public enum Genre {
-        ROCK,
-        COUNTRY,
-        DANCE,
-        SOUL,
-        POP,
-        JAZZ,
-        CLASSICAL
-    }
-
     @Id
     @GeneratedValue
     private long albumId;
@@ -45,6 +35,11 @@ public class Album {
         this.artist = artist;
         this.releaseDate = releaseDate;
         this.genre = genre;
+    }
+
+    public Album(String name, String artistName) {
+        this.name = name;
+        this.artist = new Artist(artistName);
     }
 
 

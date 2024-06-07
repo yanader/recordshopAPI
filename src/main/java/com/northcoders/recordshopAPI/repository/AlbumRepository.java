@@ -23,7 +23,7 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
             "WHERE al.albumId = :id")
     Optional<AlbumStockDTO> getAlbumDTOById(@Param("id") int id);
 
-    @Query("SELECT new com.northcoders.recordshopAPI.model.Album(al.albumId, al.name, ar.name) " +
+    @Query("SELECT new com.northcoders.recordshopAPI.model.Album(al.name, ar.name) " +
             "FROM Album al JOIN al.artist ar " +
             "WHERE al.name = :albumName AND ar.name = :artistName")
     Optional<Album> findAlbumByNameAndArtistName(@Param("albumName") String albumName, @Param("artistName") String artistName);

@@ -1,10 +1,10 @@
 package com.northcoders.recordshopAPI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.northcoders.recordshopAPI.model.Album;
 import com.northcoders.recordshopAPI.model.AlbumStockDTO;
 import com.northcoders.recordshopAPI.model.Artist;
+import com.northcoders.recordshopAPI.model.Genre;
 import com.northcoders.recordshopAPI.service.RecordShopServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,9 +47,9 @@ class RecordShopControllerTest {
     @Test
     void getAllAlbums() throws Exception {
         List<Album> albumList = List.of(
-                new Album(1L, "Nevermind", new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK ),
-                new Album(2L, "Owls", new Artist("Owls"), LocalDate.now(), Album.Genre.JAZZ ),
-                new Album(3L, "One More Time", new Artist("Britney Spears"), LocalDate.now(), Album.Genre.POP )
+                new Album(1L, "Nevermind", new Artist("Nirvana"), LocalDate.now(), Genre.ROCK ),
+                new Album(2L, "Owls", new Artist("Owls"), LocalDate.now(), Genre.JAZZ ),
+                new Album(3L, "One More Time", new Artist("Britney Spears"), LocalDate.now(), Genre.POP )
         );
 
         when(mockService.getAllAlbums()).thenReturn(albumList);
