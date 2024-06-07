@@ -7,4 +7,3 @@ Define user stories to dictate which endpoints are needed
 add some customisation to /health
     (maybe use a cleaner endpoint /api/v1/recordstore/health that redirects)
 
- 
