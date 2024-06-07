@@ -41,4 +41,11 @@ public class RecordShopServiceImpl implements RecordShopService{
         Optional<AlbumStockDTO> optional = albumRepository.getAlbumDTOById(id);
         return optional.orElse(null);
     }
+
+    @Override
+    public Album addAlbum(Album album) {
+        return null;
+    }
+
+    // I MIGHT NEED ANOTHER MODEL FOR POSTING
 }

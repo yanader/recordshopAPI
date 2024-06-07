@@ -9,4 +9,5 @@ public interface RecordShopService {
     List<Album> getAllAlbums();
     List<AlbumStockDTO> getAllInStockAlbums();
     AlbumStockDTO getAlbumDTOById(int id);
+    Album addAlbum(Album album);
 }

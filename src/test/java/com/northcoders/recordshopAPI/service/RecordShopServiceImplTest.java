@@ -3,6 +3,7 @@ package com.northcoders.recordshopAPI.service;
 import com.northcoders.recordshopAPI.model.Album;
 import com.northcoders.recordshopAPI.model.AlbumStockDTO;
 import com.northcoders.recordshopAPI.model.Artist;
+import com.northcoders.recordshopAPI.model.Stock;
 import com.northcoders.recordshopAPI.repository.AlbumRepository;
 import com.northcoders.recordshopAPI.repository.ArtistRepository;
 import com.northcoders.recordshopAPI.repository.StockRepository;
@@ -106,6 +107,62 @@ class RecordShopServiceImplTest {
 
         assertNull(actualAlbum);
         verify(mockAlbumRepository, times(1)).getAlbumDTOById(1);
+    }
+
+    @Test
+    void postAlbumFindsExistingAlbumAndUpdatesStock() {
+        Optional<Album> optionalAlbumToPost = Optional.of(new Album(1L,"Nevermind", new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK ));
+        Optional<Stock> optionalStock = Optional.of(new Stock(1L, 1L, 1099, 5));
+
+        when(mockAlbumRepository.findAlbumByNameAndArtistName("Nevermind", "Nirvana")).thenReturn(optionalAlbumToPost);
+        Album actualAlbum = optionalAlbumToPost.get();
+
+        when(mockStockRepository.findAllByAlbumId()).thenReturn(optionalStock);
+        Stock stock = optionalStock.get();
+        stock.setNumberInStock(stock.getNumberInStock() + 1);
+        when(mockStockRepository.save(stock)).thenReturn(stock);
+
+        Album addedAlbum = service.addAlbum(actualAlbum);
+        assertNotNull(addedAlbum);
+
+        verify(mockAlbumRepository, times(1)).findAlbumByNameAndArtistName("Nevermind", "Nirvana");
+        verify(mockStockRepository, times(1)).findAllByAlbumId();
+        verify(mockStockRepository, times(1)).save(stock);
+    }
+
+    @Test
+    void postAlbumDoesNotFindExistingAndUpdatesAlbumsAndStock() {
+        Optional<Album> emptyOptional = Optional.empty();
+        Album albumToAdd = new Album(1L,"Nevermind", new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK );
+        Stock stockToAdd = new Stock(1L, 1L, 1099, 1);
+
+        // Check if the album exists and receive an empty optional
+        when(mockAlbumRepository.findAlbumByNameAndArtistName("Nirvana", "Nevermind")).thenReturn(emptyOptional);
+
+        // Add the album to the albums table
+        when(mockAlbumRepository.save(albumToAdd)).thenReturn(albumToAdd);
+
+        // Add the stock to the stock table
+        when(mockStockRepository.save(stockToAdd)).thenReturn(stockToAdd);
+
+        Album addedAlbum = service.addAlbum(albumToAdd);
+        assertNotNull(addedAlbum);
+
+        verify(mockAlbumRepository, times(1)).findAlbumByNameAndArtistName(anyString(), anyString());
+        verify(mockAlbumRepository, times(1)).save(albumToAdd);
+        verify(mockStockRepository, times(1)).save(stockToAdd);
+    }
+
+    @Test
+    void postAlbumRejectInvalidAlbumAndReturnsNull() {
+        Album firstAlbumToAdd = new Album(1L,"Nevermind", null, LocalDate.now(), Album.Genre.ROCK );
+        Album secondAlbumToAdd = new Album(2L,null, new Artist("Nirvana"), LocalDate.now(), Album.Genre.ROCK );
+
+        Album firstResult = service.addAlbum(firstAlbumToAdd);
+        Album secondResult = service.addAlbum(secondAlbumToAdd);
+
+        assertNull(firstResult);
+        assertNull(secondResult);
     }
 
 
