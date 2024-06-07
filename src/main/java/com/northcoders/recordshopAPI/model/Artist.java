@@ -14,10 +14,11 @@ public class Artist {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long artistId;
 
     @NotNull
     private String name;
+
 
     private List<Record> discography;
 }

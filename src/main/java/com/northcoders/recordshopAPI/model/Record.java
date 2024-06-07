@@ -1,8 +1,6 @@
 package com.northcoders.recordshopAPI.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,12 +16,14 @@ public class Record {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long recordId;
 
     @NotNull
     private String name;
 
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "artistId")
     private Artist artist;
 
     private int yearOfRelease;

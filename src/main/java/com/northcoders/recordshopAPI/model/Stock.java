@@ -16,7 +16,7 @@ public class Stock {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long stockId;
 
     @NotNull
     private long recordId;
