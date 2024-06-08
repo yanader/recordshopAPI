@@ -48,9 +48,9 @@ class RecordShopControllerTest {
     @Test
     void getAllAlbums() throws Exception {
         List<AlbumDTO> albumDTOList = List.of(
-                new AlbumDTO(new Album(1L, "Nevermind", new Artist("Nirvana"), LocalDate.now(), Genre.ROCK )),
-                new AlbumDTO(new Album(2L, "Owls", new Artist("Owls"), LocalDate.now(), Genre.JAZZ )),
-                new AlbumDTO(new Album(3L, "One More Time", new Artist("Britney Spears"), LocalDate.now(), Genre.POP ))
+                new AlbumDTO(new Album(1L, "Nevermind", "Nirvana", LocalDate.now(), Genre.ROCK )),
+                new AlbumDTO(new Album(2L, "Owls", "Owls", LocalDate.now(), Genre.JAZZ )),
+                new AlbumDTO(new Album(3L, "One More Time", "Britney Spears", LocalDate.now(), Genre.POP ))
         );
 
         when(mockService.getAllAlbums()).thenReturn(albumDTOList);
@@ -58,9 +58,9 @@ class RecordShopControllerTest {
         this.mockMvcController.perform(
                 MockMvcRequestBuilders.get("/api/v1/recordstore/albums"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Nevermind"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Owls"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[2].name").value("One More Time"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("Nevermind"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].albumName").value("One More Time"));
 
         verify(mockService, times(1)).getAllAlbums();
     }
@@ -132,7 +132,7 @@ class RecordShopControllerTest {
     @Test
     void postAlbumPostsSuccessfullyWithFullBody() throws Exception {
         PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", "Owls", 1899, LocalDate.EPOCH, Genre.ROCK);
-        Album addedAlbum = new Album(0L, "Owls", new Artist("Owls"), LocalDate.now(), Genre.ROCK);
+        Album addedAlbum = new Album(0L, "Owls", "Owls", LocalDate.now(), Genre.ROCK);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(addedAlbum);
 
@@ -141,14 +141,15 @@ class RecordShopControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(albumToPost)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Owls"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("ROCK"));
     }
 
     @Test
     void postAlbumPostsSuccessfullyWithMinimalBody() throws Exception {
         PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", "Owls", null, null, null);
-        Album addedAlbum = new Album(0L, "Owls", new Artist("Owls"), null, null);
+        Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(addedAlbum);
 
@@ -157,13 +158,14 @@ class RecordShopControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(albumToPost)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Owls"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Owls"));
     }
 
     @Test
     void postAlbumRejectsAlbumWithMissingDetails() throws Exception {
         PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", null, 1899, null, null);
-        Album addedAlbum = new Album(0L, "Owls", new Artist("Owls"), null, null);
+        Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(null);
 

@@ -8,15 +8,15 @@ import java.time.LocalDate;
 public class AlbumDTO {
 
     private long albumId;
-    private String name;
-    private String artist;
+    private String albumName;
+    private String artistName;
     private LocalDate releaseDate;
     private Genre genre;
 
     public AlbumDTO(Album album) {
         this.albumId = getAlbumId();
-        this.name = album.getName();
-        this.artist = album.getArtist().getName();
+        this.albumName = album.getAlbumName();
+        this.artistName = album.getArtistName();
         this.releaseDate = album.getReleaseDate();
         this.genre = album.getGenre();
     }
