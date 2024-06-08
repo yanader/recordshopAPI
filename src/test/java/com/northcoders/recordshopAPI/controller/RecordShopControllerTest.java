@@ -1,10 +1,9 @@
 package com.northcoders.recordshopAPI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.northcoders.recordshopAPI.model.Album;
-import com.northcoders.recordshopAPI.model.AlbumStockDTO;
-import com.northcoders.recordshopAPI.model.Artist;
-import com.northcoders.recordshopAPI.model.Genre;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.northcoders.recordshopAPI.model.*;
 import com.northcoders.recordshopAPI.service.RecordShopServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -41,25 +41,26 @@ class RecordShopControllerTest {
     void setup() {
         mockMvcController = MockMvcBuilders.standaloneSetup(controller).build();
         mapper = new ObjectMapper();
-//        mapper.registerModule(new JavaTimeModule());
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
     @Test
     void getAllAlbums() throws Exception {
-        List<Album> albumList = List.of(
-                new Album(1L, "Nevermind", new Artist("Nirvana"), LocalDate.now(), Genre.ROCK ),
-                new Album(2L, "Owls", new Artist("Owls"), LocalDate.now(), Genre.JAZZ ),
-                new Album(3L, "One More Time", new Artist("Britney Spears"), LocalDate.now(), Genre.POP )
+        List<AlbumDTO> albumDTOList = List.of(
+                new AlbumDTO(new Album(1L, "Nevermind", "Nirvana", LocalDate.now(), Genre.ROCK )),
+                new AlbumDTO(new Album(2L, "Owls", "Owls", LocalDate.now(), Genre.JAZZ )),
+                new AlbumDTO(new Album(3L, "One More Time", "Britney Spears", LocalDate.now(), Genre.POP ))
         );
 
-        when(mockService.getAllAlbums()).thenReturn(albumList);
+        when(mockService.getAllAlbums()).thenReturn(albumDTOList);
 
         this.mockMvcController.perform(
                 MockMvcRequestBuilders.get("/api/v1/recordstore/albums"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.albumId == 1)].name").value("Nevermind"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.albumId == 2)].name").value("Owls"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[?(@.albumId == 3)].name").value("One More Time"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("Nevermind"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].albumName").value("One More Time"));
 
         verify(mockService, times(1)).getAllAlbums();
     }
@@ -128,9 +129,53 @@ class RecordShopControllerTest {
         verify(mockService, times(1)).getAlbumDTOById(1);
     }
 
-    /* Next tests are endpoint tests for POSTing a new album
-        test works with full request body
-        test works with minimal test body
-        test rejects with missing fields
-     */
+    @Test
+    void postAlbumPostsSuccessfullyWithFullBody() throws Exception {
+        PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", "Owls", 1899, LocalDate.EPOCH, Genre.ROCK);
+        Album addedAlbum = new Album(0L, "Owls", "Owls", LocalDate.now(), Genre.ROCK);
+
+        when(mockService.addAlbum(albumToPost)).thenReturn(addedAlbum);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.post("/api/v1/recordstore/albums/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(albumToPost)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("ROCK"));
+    }
+
+    @Test
+    void postAlbumPostsSuccessfullyWithMinimalBody() throws Exception {
+        PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", "Owls", null, null, null);
+        Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
+
+        when(mockService.addAlbum(albumToPost)).thenReturn(addedAlbum);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.post("/api/v1/recordstore/albums/add")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(albumToPost)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Owls"));
+    }
+
+    @Test
+    void postAlbumRejectsAlbumWithMissingDetails() throws Exception {
+        PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", null, 1899, null, null);
+        Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
+
+        when(mockService.addAlbum(albumToPost)).thenReturn(null);
+        when(mockService.invalidPostMessage()).thenCallRealMethod();
+
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.post("/api/v1/recordstore/albums/add")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(albumToPost)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().reason(mockService.invalidPostMessage()));
+    }
 }

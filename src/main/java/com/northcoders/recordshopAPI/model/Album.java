@@ -15,31 +15,29 @@ import java.time.LocalDate;
 public class Album {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long albumId;
 
     @NotNull
-    private String name;
+    private String albumName;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "artistId")
-    private Artist artist;
+    private String artistName;
 
     private LocalDate releaseDate;
 
     private Genre genre;
 
-    public Album(String name, Artist artist, LocalDate releaseDate, Genre genre) {
-        this.name = name;
-        this.artist = artist;
+    public Album(String albumName, String artistName, LocalDate releaseDate, Genre genre) {
+        this.albumName = albumName;
+        this.artistName = artistName;
         this.releaseDate = releaseDate;
         this.genre = genre;
     }
 
-    public Album(String name, String artistName) {
-        this.name = name;
-        this.artist = new Artist(artistName);
+    public Album(String albumName, String artistName) {
+        this.albumName = albumName;
+        this.artistName = artistName;
     }
 
 
