@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class Album {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long albumId;
 
     @NotNull

@@ -49,7 +49,7 @@ public class RecordShopController {
     public ResponseEntity<Album> addNewAlbum(@RequestBody PostAlbumDTO albumToAdd) {
         Album addedAlbum = recordShopService.addAlbum(albumToAdd);
         if (addedAlbum == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing album/artist name");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, recordShopService.invalidPostMessage());
         } else {
             return new ResponseEntity<>(addedAlbum, HttpStatus.CREATED);
         }

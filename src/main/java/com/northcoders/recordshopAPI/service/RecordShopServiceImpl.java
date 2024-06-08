@@ -59,15 +59,22 @@ public class RecordShopServiceImpl implements RecordShopService{
             Stock stock = optionalStockToAdd.get();
             stock.setNumberInStock(stock.getNumberInStock() + 1);
             addedAlbum = optionalAlbumToAdd.get();
+            stockRepository.save(stock);
         }
         return addedAlbum;
-
     }
 
     private boolean validPostAlbumDTO(PostAlbumDTO postAlbumDTO) {
-        String albumName = postAlbumDTO.getAlbumName();
-        String artistName = postAlbumDTO.getArtistName();
-        return albumName != null && artistName != null && !albumName.isEmpty() && !artistName.isEmpty();
+        if (postAlbumDTO.getAlbumName() == null) return false;
+        if (postAlbumDTO.getArtistName() == null) return false;
+        if (postAlbumDTO.getPriceInPence() == null) return false;
+        if (postAlbumDTO.getReleaseDate() == null) return false;
+        if (postAlbumDTO.getGenre() == null) return false;
+        return true;
+    }
+
+    public String invalidPostMessage() {
+        return "Missing Details: albumName, artistName, priceInPence, releaseDate(yyyy-mm-dd), genre(See documentation for list)";
     }
 
 

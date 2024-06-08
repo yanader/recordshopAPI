@@ -12,4 +12,5 @@ public interface RecordShopService {
     List<AlbumStockDTO> getAllInStockAlbums();
     AlbumStockDTO getAlbumDTOById(int id);
     Album addAlbum(PostAlbumDTO albumToPost);
+    String invalidPostMessage();
 }

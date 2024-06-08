@@ -14,7 +14,7 @@ public class AlbumDTO {
     private Genre genre;
 
     public AlbumDTO(Album album) {
-        this.albumId = getAlbumId();
+        this.albumId = album.getAlbumId();
         this.albumName = album.getAlbumName();
         this.artistName = album.getArtistName();
         this.releaseDate = album.getReleaseDate();

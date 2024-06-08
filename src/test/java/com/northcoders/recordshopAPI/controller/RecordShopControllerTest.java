@@ -168,12 +168,14 @@ class RecordShopControllerTest {
         Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(null);
+        when(mockService.invalidPostMessage()).thenCallRealMethod();
+
 
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.post("/api/v1/recordstore/albums/add")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(albumToPost)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.status().reason("Missing album/artist name"));
+                .andExpect(MockMvcResultMatchers.status().reason(mockService.invalidPostMessage()));
     }
 }
