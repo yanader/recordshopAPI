@@ -43,7 +43,7 @@ class RecordShopServiceImplTest {
 
         when(mockAlbumRepository.findAll()).thenReturn(albumList);
 
-        List<Album> resultList = service.getAllAlbums();
+        List<AlbumDTO> resultList = service.getAllAlbums();
 
         assertEquals(3, resultList.size());
         assertEquals("Nirvana", resultList.get(0).getArtist().getName());

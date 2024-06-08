@@ -1,15 +1,14 @@
 package com.northcoders.recordshopAPI.controller;
 
 import com.northcoders.recordshopAPI.model.Album;
+import com.northcoders.recordshopAPI.model.AlbumDTO;
 import com.northcoders.recordshopAPI.model.AlbumStockDTO;
+import com.northcoders.recordshopAPI.model.PostAlbumDTO;
 import com.northcoders.recordshopAPI.service.RecordShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class RecordShopController {
     RecordShopService recordShopService;
 
     @GetMapping(value = "/albums")
-    public ResponseEntity<List<Album>> getAllAlbums() {
+    public ResponseEntity<List<AlbumDTO>> getAllAlbums() {
         return new ResponseEntity<>(recordShopService.getAllAlbums() , HttpStatus.OK);
     }
 
@@ -43,6 +42,16 @@ public class RecordShopController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No album with id " + id + " exists");
         } else {
             return new ResponseEntity<>(album, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(value ="/albums/add")
+    public ResponseEntity<Album> addNewAlbum(@RequestBody PostAlbumDTO albumToAdd) {
+        Album addedAlbum = recordShopService.addAlbum(albumToAdd);
+        if (addedAlbum == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing album/artist name");
+        } else {
+            return new ResponseEntity<>(addedAlbum, HttpStatus.CREATED);
         }
     }
 }

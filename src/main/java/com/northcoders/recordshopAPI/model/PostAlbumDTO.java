@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class PostAlbumDTO {
     String albumName;
     String artistName;
-    int priceInPence;
+    Integer priceInPence;
     LocalDate releaseDate;
     Genre genre;
 }

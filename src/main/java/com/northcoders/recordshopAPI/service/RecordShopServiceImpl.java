@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RecordShopServiceImpl implements RecordShopService{
@@ -25,10 +26,10 @@ public class RecordShopServiceImpl implements RecordShopService{
     StockRepository stockRepository;
 
     @Override
-    public List<Album> getAllAlbums() {
+    public List<AlbumDTO> getAllAlbums() {
         List<Album> albumList = new ArrayList<>();
         albumRepository.findAll().forEach(albumList::add);
-        return albumList;
+        return albumList.stream().map(AlbumDTO::new).collect(Collectors.toList());
     }
 
     @Override
