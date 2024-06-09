@@ -269,7 +269,7 @@ class RecordShopServiceImplTest {
     }
 
     @Test
-    void getAllAlbumsWithSpecifiedReleaseyYar() {
+    void getAllAlbumsWithSpecifiedReleaseYearr() {
         List<Album> albumList = List.of(
                 new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK),
                 new Album("nevermind", "nirvana", LocalDate.EPOCH, Genre.ROCK)
@@ -278,14 +278,14 @@ class RecordShopServiceImplTest {
         LocalDate start = LocalDate.of(year, 1, 1);
         LocalDate end = LocalDate.of(year, 12, 31);
 
-        when(mockAlbumRepository.findByReleaseDataBetween(start, end)).thenReturn(albumList);
+        when(mockAlbumRepository.findByReleaseDateBetween(start, end)).thenReturn(albumList);
 
         List<Album> resultsList = service.getAlbumsByYear(1970);
 
         assertEquals(2, resultsList.size());
         assertEquals("bleach", resultsList.get(0).getAlbumName());
         assertEquals("nevermind", resultsList.get(1).getAlbumName());
-        verify(mockAlbumRepository,times(1)).findByReleaseDataBetween(start, end);
+        verify(mockAlbumRepository,times(1)).findByReleaseDateBetween(start, end);
     }
 
     @Test
@@ -296,12 +296,12 @@ class RecordShopServiceImplTest {
         LocalDate start = LocalDate.of(year, 1, 1);
         LocalDate end = LocalDate.of(year, 12, 31);
 
-        when(mockAlbumRepository.findByReleaseDataBetween(start, end)).thenReturn(emptyList);
+        when(mockAlbumRepository.findByReleaseDateBetween(start, end)).thenReturn(emptyList);
 
         List<Album> resultsList = service.getAlbumsByYear(1970);
 
         assertNull(resultsList);
-        verify(mockAlbumRepository,times(1)).findByReleaseDataBetween(start, end);
+        verify(mockAlbumRepository,times(1)).findByReleaseDateBetween(start, end);
     }
 
 

@@ -84,6 +84,17 @@ public class RecordShopController {
         } else {
             return new ResponseEntity<>(albumList, HttpStatus.OK);
         }
-
     }
+
+    @GetMapping(value="/albums", params="year")
+    public ResponseEntity<List<Album>> getAllAlbumsByYear(@RequestParam int year) {
+        List<Album> albumList = recordShopService.getAlbumsByYear(year);
+        if (albumList == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "We have no albums from " + year);
+        } else {
+            return new ResponseEntity<>(albumList, HttpStatus.OK);
+        }
+    }
+
+
 }

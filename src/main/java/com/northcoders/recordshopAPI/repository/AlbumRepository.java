@@ -33,7 +33,7 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
 
     List<Album> findByArtistName(String artistName);
 
-    List<Album> findByReleaseDataBetween(LocalDate start, LocalDate end);
+    List<Album> findByReleaseDateBetween(LocalDate start, LocalDate end);
 }
 
 

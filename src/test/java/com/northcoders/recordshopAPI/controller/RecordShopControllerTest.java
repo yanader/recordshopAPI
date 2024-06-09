@@ -259,6 +259,32 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.status().reason("We have no albums by Nirvana"));
     }
 
+    @Test
+    void getAlbumsByReleaseYearSuppliesList() throws Exception {
+        List<Album> albumList = List.of(
+                new Album("Bleach", "Nirvana", LocalDate.now(), Genre.ROCK),
+                new Album("Nevermind", "Nirvana", LocalDate.now(), Genre.ROCK)
+        );
+
+        when(mockService.getAlbumsByYear(2024)).thenReturn(albumList);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("year", "2024"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("bleach"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("nevermind"));
+    }
+
+    @Test
+    void getAlbumsByReleaseYearReportsNoAlbums() throws Exception {
+        when(mockService.getAlbumsByYear(1970)).thenReturn(null);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("year", "1970"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("We have no albums from 1970"));
+    }
+
 
 
 

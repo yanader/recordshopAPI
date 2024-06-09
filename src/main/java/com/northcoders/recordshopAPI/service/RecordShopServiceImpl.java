@@ -101,7 +101,7 @@ public class RecordShopServiceImpl implements RecordShopService{
     public List<Album> getAlbumsByYear(int year) {
         LocalDate start = LocalDate.of(year, 1, 1);
         LocalDate end = LocalDate.of(year, 12, 31);
-        List<Album> albumList = albumRepository.findByReleaseDataBetween(start, end);
+        List<Album> albumList = albumRepository.findByReleaseDateBetween(start, end);
         return albumList.isEmpty() ? null : albumList;
     }
 
