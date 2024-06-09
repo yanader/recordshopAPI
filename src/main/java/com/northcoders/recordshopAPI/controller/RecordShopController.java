@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -122,6 +123,11 @@ public class RecordShopController {
         } else {
             return new ResponseEntity<>(updatedAlbum, HttpStatus.OK);
         }
+    }
+
+    @GetMapping(value = "/health")
+    public RedirectView apiHealth() {
+        return new RedirectView("/actuator/health");
     }
 
 }

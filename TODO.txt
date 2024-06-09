@@ -1,3 +1,15 @@
+----TODO----
+
+Bug
+GET album by name returns error if more than one album has the same name
+
+Beyond MVP
+When querying an album Id that doesn't exist, suggest an id for one that does
+
+
+----DONE----
+
+
 Define user stories to dictate which endpoints are needed
     the end points will then define the service methods needed
     this will also define any custom repository methods needed
@@ -21,12 +33,4 @@ SEVEN       DONE            DONE            DONE            DONE            DONE
 PUT         DONE            DONE            DONE            DONE            DONE
 EIGHT       DONE            DONE            DONE            DONE            DONE
 NINE        DONE            DONE            DONE            DONE            DONE
-HEALTH
-
-
-
-Bug
-GET album by name returns error if more than one album has the same name
-
-Beyond MVP
-When querying an album Id that doesn't exist, suggest an id for one that does
+HEALTH      ----            ----            ----            ----            DONE
