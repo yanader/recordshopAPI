@@ -245,8 +245,8 @@ class RecordShopControllerTest {
         this.mockMvcController.perform(
                 MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("artistname", "Nirvana"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("Bleach"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("Nevermind"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("bleach"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("nevermind"));
     }
 
     @Test

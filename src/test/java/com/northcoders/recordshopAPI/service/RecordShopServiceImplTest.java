@@ -127,12 +127,12 @@ class RecordShopServiceImplTest {
     @Test
     void postAlbumDoesNotFindExistingAndUpdatesAlbumsAndStock() {
         Optional<Album> emptyOptional = Optional.empty();
-        SubmittedAlbumDTO submittedAlbumDTO = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
-        Album albumToAdd = new Album(0L,"Nevermind", "Nirvana", LocalDate.EPOCH, Genre.ROCK );
+        SubmittedAlbumDTO submittedAlbumDTO = new SubmittedAlbumDTO("nevermind", "nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
+        Album albumToAdd = new Album(0L,"nevermind", "nirvana", LocalDate.EPOCH, Genre.ROCK );
         Stock stockToAdd = new Stock(0L, 0L, 1099, 1);
 
         // Dictate empty optional from checking if album exists
-        when(mockAlbumRepository.findByAlbumNameAndArtistName("Nevermind", "Nirvana")).thenReturn(emptyOptional);
+        when(mockAlbumRepository.findByAlbumNameAndArtistName("nevermind", "nirvana")).thenReturn(emptyOptional);
 
         // Dictate album is returned when saved
         when(mockAlbumRepository.save(albumToAdd)).thenReturn(albumToAdd);
@@ -145,7 +145,7 @@ class RecordShopServiceImplTest {
 
         assertEquals(albumToAdd, addedAlbum);
 
-        verify(mockAlbumRepository, times(1)).findByAlbumNameAndArtistName("Nevermind", "Nirvana");
+        verify(mockAlbumRepository, times(1)).findByAlbumNameAndArtistName("nevermind", "nirvana");
         verify(mockAlbumRepository, times(1)).save(albumToAdd);
         verify(mockStockRepository, times(1)).save(stockToAdd);
     }
@@ -242,30 +242,30 @@ class RecordShopServiceImplTest {
     @Test
     void getAllAlbumsFilteredByArtist() {
         List<Album> albumList = List.of(
-                new Album("Bleach", "Nirvana", LocalDate.EPOCH, Genre.ROCK),
-                new Album("Nevermind", "Nirvana", LocalDate.EPOCH, Genre.ROCK)
+                new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK),
+                new Album("nevermind", "nirvana", LocalDate.EPOCH, Genre.ROCK)
         );
 
-        when(mockAlbumRepository.findByArtistName("Nirvana")).thenReturn(albumList);
+        when(mockAlbumRepository.findByArtistName("nirvana")).thenReturn(albumList);
 
-        List<Album> resultsList = service.getAllAlbumsByArtistName("Nirvana");
+        List<Album> resultsList = service.getAllAlbumsByArtistName("nirvana");
 
         assertEquals(2, resultsList.size());
-        assertEquals("Bleach", resultsList.get(0).getAlbumName());
-        assertEquals("Nevermind", resultsList.get(1).getAlbumName());
-        verify(mockAlbumRepository,times(1)).findByArtistName("Nirvana");
+        assertEquals("bleach", resultsList.get(0).getAlbumName());
+        assertEquals("nevermind", resultsList.get(1).getAlbumName());
+        verify(mockAlbumRepository,times(1)).findByArtistName("nirvana");
     }
 
     @Test
     void getAllAlbumsFilterByArtistNameReturnsEmptyList() {
         List<Album> emptyList = List.of();
 
-        when(mockAlbumRepository.findByArtistName("Nirvana")).thenReturn(emptyList);
+        when(mockAlbumRepository.findByArtistName("nirvana")).thenReturn(emptyList);
 
         List<Album> resultsList = service.getAllAlbumsByArtistName("Nirvana");
 
         assertNull(resultsList);
-        verify(mockAlbumRepository,times(1)).findByArtistName("Nirvana");
+        verify(mockAlbumRepository,times(1)).findByArtistName("nirvana");
     }
 
 

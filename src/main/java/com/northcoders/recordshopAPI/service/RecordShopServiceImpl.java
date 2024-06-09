@@ -92,7 +92,7 @@ public class RecordShopServiceImpl implements RecordShopService{
 
     @Override
     public List<Album> getAllAlbumsByArtistName(String artistName) {
-        List<Album> albumList = albumRepository.findByArtistName(artistName);
+        List<Album> albumList = albumRepository.findByArtistName(artistName.toLowerCase());
         return albumList.isEmpty() ? null : albumList;
     }
 
