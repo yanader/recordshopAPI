@@ -104,7 +104,7 @@ class RecordShopServiceImplTest {
 
     @Test
     void postAlbumFindsExistingAlbumAndUpdatesStock() {
-        PostAlbumDTO postAlbumDTO = new PostAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.now(), Genre.ROCK);
+        SubmittedAlbumDTO submittedAlbumDTO = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.now(), Genre.ROCK);
         Optional<Album> optionalAlbumToPost = Optional.of(new Album(0L,"Nevermind", "Nirvana", LocalDate.now(), Genre.ROCK ));
         Optional<Stock> optionalStock = Optional.of(new Stock(0L, 0L, 1099, 5));
 
@@ -116,7 +116,7 @@ class RecordShopServiceImplTest {
 
 
 
-        Album addedAlbum = service.addAlbum(postAlbumDTO);
+        Album addedAlbum = service.addAlbum(submittedAlbumDTO);
         assertNotNull(addedAlbum);
         assertEquals(6, stock.getNumberInStock());
 
@@ -127,7 +127,7 @@ class RecordShopServiceImplTest {
     @Test
     void postAlbumDoesNotFindExistingAndUpdatesAlbumsAndStock() {
         Optional<Album> emptyOptional = Optional.empty();
-        PostAlbumDTO postAlbumDTO = new PostAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
+        SubmittedAlbumDTO submittedAlbumDTO = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
         Album albumToAdd = new Album(0L,"Nevermind", "Nirvana", LocalDate.EPOCH, Genre.ROCK );
         Stock stockToAdd = new Stock(0L, 0L, 1099, 1);
 
@@ -140,7 +140,7 @@ class RecordShopServiceImplTest {
         // Dictate returning Stock item when we add it (automatic without calculation because album wasn't found
         when(mockStockRepository.save(stockToAdd)).thenReturn(stockToAdd);
 
-        Album addedAlbum = service.addAlbum(postAlbumDTO);
+        Album addedAlbum = service.addAlbum(submittedAlbumDTO);
         assertNotNull(addedAlbum);
 
         assertEquals(albumToAdd, addedAlbum);
@@ -152,8 +152,8 @@ class RecordShopServiceImplTest {
 
     @Test
     void postAlbumRejectInvalidAlbumAndReturnsNull() {
-        PostAlbumDTO firstPostAlbum = new PostAlbumDTO(null, "Nirvana", 1099, LocalDate.now(), Genre.ROCK);
-        PostAlbumDTO secondPostAlbum = new PostAlbumDTO("Nevermind", null, 1099, LocalDate.now(), Genre.ROCK);
+        SubmittedAlbumDTO firstPostAlbum = new SubmittedAlbumDTO(null, "Nirvana", 1099, LocalDate.now(), Genre.ROCK);
+        SubmittedAlbumDTO secondPostAlbum = new SubmittedAlbumDTO("Nevermind", null, 1099, LocalDate.now(), Genre.ROCK);
 
         Album firstResult = service.addAlbum(firstPostAlbum);
         Album secondResult = service.addAlbum(secondPostAlbum);
@@ -161,6 +161,58 @@ class RecordShopServiceImplTest {
         assertNull(firstResult);
         assertNull(secondResult);
     }
+
+    @Test
+    void putAlbumUpdatesAlbumSuccessfully() {
+        SubmittedAlbumDTO submittedAlbumDTO = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
+        int idToPutAt = 1;
+        Album albumToAdd = new Album(1L,"Nevermind", "Nirvana", LocalDate.EPOCH, Genre.ROCK );
+        Optional<Stock> optionalStock = Optional.of(new Stock(0, 1299, 1));
+
+        when(mockAlbumRepository.existsById(1)).thenReturn(true);
+        when(mockAlbumRepository.save(albumToAdd)).thenReturn(albumToAdd);
+
+        when(mockStockRepository.findAllByAlbumId(idToPutAt)).thenReturn(optionalStock);
+
+        AlbumStockDTO addedAlbumStockDTO = service.putAlbum(submittedAlbumDTO, idToPutAt);
+
+        assertNotNull(addedAlbumStockDTO);
+        assertEquals(addedAlbumStockDTO.getAlbumName(), submittedAlbumDTO.getAlbumName());
+        assertEquals(addedAlbumStockDTO.getArtistName(), submittedAlbumDTO.getArtistName());
+
+
+        verify(mockAlbumRepository, times(1)).existsById(1);
+        verify(mockAlbumRepository, times(1)).save(albumToAdd);
+    }
+
+    @Test
+    void putAlbumFailsWithIncompleteBody() {
+        SubmittedAlbumDTO firstAlbumDTO = new SubmittedAlbumDTO(null, "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
+        SubmittedAlbumDTO secondAlbumDTO = new SubmittedAlbumDTO("Nevermind", null, 1099, LocalDate.EPOCH, Genre.ROCK);
+        SubmittedAlbumDTO thirdAlbumDTO = new SubmittedAlbumDTO("Nevermind", "Nirvana", null, LocalDate.EPOCH, Genre.ROCK);
+
+        AlbumStockDTO firstAlbumStockDTO = service.putAlbum(firstAlbumDTO, 1);
+        AlbumStockDTO secondAlbumStockDTO = service.putAlbum(secondAlbumDTO, 1);
+        AlbumStockDTO thirdAlbumStockDTO = service.putAlbum(thirdAlbumDTO, 1);
+
+        assertNull(firstAlbumStockDTO);
+        assertNull(secondAlbumStockDTO);
+        assertNull(thirdAlbumStockDTO);
+    }
+
+    @Test
+    void putAlbumFailsWithInvalidAlbumId() {
+        SubmittedAlbumDTO firstAlbumDTO = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
+        when(mockAlbumRepository.existsById(0)).thenReturn(false);
+
+        AlbumStockDTO firstAlbumStockDTO = service.putAlbum(firstAlbumDTO, 0);
+
+        assertNull(firstAlbumStockDTO);
+        verify(mockAlbumRepository, times(1)).existsById(0);
+
+    }
+
+
 
 
 }
