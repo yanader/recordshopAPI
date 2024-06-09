@@ -1,9 +1,6 @@
 package com.northcoders.recordshopAPI.service;
 
-import com.northcoders.recordshopAPI.model.Album;
-import com.northcoders.recordshopAPI.model.AlbumDTO;
-import com.northcoders.recordshopAPI.model.AlbumStockDTO;
-import com.northcoders.recordshopAPI.model.SubmittedAlbumDTO;
+import com.northcoders.recordshopAPI.model.*;
 
 import java.util.List;
 
@@ -19,4 +16,5 @@ public interface RecordShopService {
     List<Album> getAlbumsByYear(int year);
     List<Album> getAlbumsByGenre(String genre);
     AlbumStockDTO getAlbumDetailsByAlbumName(String albumName);
+    Album updateAlbumDetails(long id, UpdateAlbumDTO updates);
 }

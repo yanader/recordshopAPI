@@ -335,6 +335,39 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.status().reason("No album called nevermind in stock"));
     }
 
+    @Test
+    void patchAlbumUpdatesAlbum() throws Exception {
+        Album albumToUpdate = new Album(1, "bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK);
+
+        UpdateAlbumDTO updates = new UpdateAlbumDTO("Owls", "Owls", LocalDate.of(1999, 1, 1), Genre.POP, 500, 100);
+        Album albumUpdates = new Album("Owls", "Owls", LocalDate.of(1999, 1, 1), Genre.POP);
+
+        when(mockService.updateAlbumDetails(1L, updates)).thenReturn(albumUpdates);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.patch("/api/v1/recordstore/albums/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updates)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("owls"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("POP"));
+    }
+
+    @Test
+    void patchAlbumReturnsNullAfterInvalidId() throws Exception {
+        UpdateAlbumDTO updates = new UpdateAlbumDTO("Owls", "Owls", LocalDate.of(1999, 1, 1), Genre.POP, 500, 100);
+        when(mockService.updateAlbumDetails(1L, updates)).thenReturn(null);
+
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.patch("/api/v1/recordstore/albums/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(updates)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("No album with id 1 exists"));
+    }
+
 
 
 
