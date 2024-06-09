@@ -28,7 +28,9 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
 //            "WHERE al.name = :albumName AND ar.name = :artistName")
     Optional<Album> findByAlbumNameAndArtistName(String albumName, String artistName);
 
-    Optional<Album> findByAlbumName(String name);
+    Optional<Album> findByAlbumName(String albumName);
+
+    List<Album> findByArtistName(String artistName);
 }
 
 

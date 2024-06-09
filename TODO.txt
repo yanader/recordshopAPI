@@ -13,7 +13,7 @@ User Stories (reference from resources/*.png
 INIT        DONE            DONE        DONE            DONE            DONE
 ONE         DONE            DONE        DONE            DONE            DONE
 TWO         DONE            DONE        DONE            DONE            DONE
-THREE
+THREE       DONE            DONE                        DONE
 FOUR
 FIVE
 SIX

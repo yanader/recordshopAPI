@@ -90,6 +90,11 @@ public class RecordShopServiceImpl implements RecordShopService{
         return true;
     }
 
+    @Override
+    public List<Album> getAllAlbumsByArtistName(String artistName) {
+        return albumRepository.findByArtistName(artistName);
+    }
+
     private boolean submittedAlbumIsValid(SubmittedAlbumDTO submittedAlbumDTO) {
         if (submittedAlbumDTO.getAlbumName() == null) return false;
         if (submittedAlbumDTO.getArtistName() == null) return false;

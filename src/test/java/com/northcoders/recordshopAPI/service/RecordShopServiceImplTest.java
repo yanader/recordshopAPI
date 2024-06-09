@@ -239,6 +239,35 @@ class RecordShopServiceImplTest {
         verify(mockStockRepository, times(0)).deleteByAlbumId(1);
     }
 
+    @Test
+    void getAllAlbumsFilteredByArtist() {
+        List<Album> albumList = List.of(
+                new Album("Bleach", "Nirvana", LocalDate.EPOCH, Genre.ROCK),
+                new Album("Nevermind", "Nirvana", LocalDate.EPOCH, Genre.ROCK)
+        );
+
+        when(mockAlbumRepository.findByArtistName("Nirvana")).thenReturn(albumList);
+
+        List<Album> resultsList = service.getAllAlbumsByArtistName("Nirvana");
+
+        assertEquals(2, resultsList.size());
+        assertEquals("Bleach", resultsList.get(0).getAlbumName());
+        assertEquals("Nevermind", resultsList.get(1).getAlbumName());
+        verify(mockAlbumRepository,times(1)).findByArtistName("Nirvana");
+    }
+
+    @Test
+    void getAllAlbumsFilterByArtistNameReturnsEmptyList() {
+        List<Album> emptyList = List.of();
+
+        when(mockAlbumRepository.findByArtistName("Nirvana")).thenReturn(emptyList);
+
+        List<Album> resultsList = service.getAllAlbumsByArtistName("Nirvana");
+
+        assertEquals(0, resultsList.size());
+        verify(mockAlbumRepository,times(1)).findByArtistName("Nirvana");
+    }
+
 
 
 
