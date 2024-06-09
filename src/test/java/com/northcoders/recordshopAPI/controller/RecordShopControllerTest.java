@@ -285,6 +285,34 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.status().reason("We have no albums from 1970"));
     }
 
+    @Test
+    void getAlbumsByGenreSuppliesList() throws Exception {
+        List<Album> albumList = List.of(
+                new Album("Bleach", "Nirvana", LocalDate.now(), Genre.ROCK),
+                new Album("Nevermind", "Nirvana", LocalDate.now(), Genre.ROCK)
+        );
+
+        when(mockService.getAlbumsByGenre("ROCK")).thenReturn(albumList);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("genre", "rock"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("bleach"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("nevermind"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value("ROCK"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value("ROCK"));
+    }
+
+    @Test
+    void getAlbumsByGenreReportsNoAlbums() throws Exception {
+        when(mockService.getAlbumsByGenre("ROCK")).thenReturn(null);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("genre", "rock"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("We have no albums in genre: ROCK"));
+    }
+
 
 
 

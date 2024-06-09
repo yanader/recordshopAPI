@@ -17,4 +17,5 @@ public interface RecordShopService {
     boolean deleteById(int id);
     List<Album> getAllAlbumsByArtistName(String artistName);
     List<Album> getAlbumsByYear(int year);
+    List<Album> getAlbumsByGenre(String genre);
 }

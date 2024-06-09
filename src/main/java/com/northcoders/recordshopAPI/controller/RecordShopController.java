@@ -5,6 +5,7 @@ import com.northcoders.recordshopAPI.model.AlbumDTO;
 import com.northcoders.recordshopAPI.model.AlbumStockDTO;
 import com.northcoders.recordshopAPI.model.SubmittedAlbumDTO;
 import com.northcoders.recordshopAPI.service.RecordShopService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -96,5 +97,14 @@ public class RecordShopController {
         }
     }
 
+    @GetMapping(value="/albums", params="genre")
+    public ResponseEntity<List<Album>> getAllAlbumsFromGenre(@RequestParam String genre) {
+        List<Album> albumList = recordShopService.getAlbumsByGenre(genre.toUpperCase());
+        if (albumList == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "We have no albums in genre: " + genre.toUpperCase());
+        } else {
+            return new ResponseEntity<>(albumList, HttpStatus.OK);
+        }
+    }
 
 }

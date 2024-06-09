@@ -105,6 +105,12 @@ public class RecordShopServiceImpl implements RecordShopService{
         return albumList.isEmpty() ? null : albumList;
     }
 
+    @Override
+    public List<Album> getAlbumsByGenre(String genre) {
+        List<Album> albumList = albumRepository.findByGenre(Genre.valueOf(genre));
+        return albumList.isEmpty() ? null : albumList;
+    }
+
     private boolean submittedAlbumIsValid(SubmittedAlbumDTO submittedAlbumDTO) {
         if (submittedAlbumDTO.getAlbumName() == null) return false;
         if (submittedAlbumDTO.getArtistName() == null) return false;
