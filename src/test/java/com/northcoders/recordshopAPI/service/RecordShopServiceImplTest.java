@@ -264,7 +264,7 @@ class RecordShopServiceImplTest {
 
         List<Album> resultsList = service.getAllAlbumsByArtistName("Nirvana");
 
-        assertEquals(0, resultsList.size());
+        assertNull(resultsList);
         verify(mockAlbumRepository,times(1)).findByArtistName("Nirvana");
     }
 

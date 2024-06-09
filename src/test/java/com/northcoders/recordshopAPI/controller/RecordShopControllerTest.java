@@ -232,4 +232,34 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.status().reason("Deletion failed. No record at id 1"));
     }
+
+    @Test
+    void getAlbumsByArtistNameProvidesListOfAlbums() throws Exception {
+        List<Album> albumList = List.of(
+                new Album("Bleach", "Nirvana", LocalDate.EPOCH, Genre.ROCK),
+                new Album("Nevermind", "Nirvana", LocalDate.EPOCH, Genre.ROCK)
+        );
+
+        when(mockService.getAllAlbumsByArtistName("Nirvana")).thenReturn(albumList);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("artistname", "Nirvana"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].albumName").value("Bleach"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].albumName").value("Nevermind"));
+    }
+
+    @Test
+    void getAlbumsByArtistNameReportsNoAlbums() throws Exception {
+        when(mockService.getAllAlbumsByArtistName("Nirvana")).thenReturn(null);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("artistname", "Nirvana"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("We have no albums by Nirvana"));
+    }
+
+
+
+
 }

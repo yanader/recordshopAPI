@@ -92,7 +92,8 @@ public class RecordShopServiceImpl implements RecordShopService{
 
     @Override
     public List<Album> getAllAlbumsByArtistName(String artistName) {
-        return albumRepository.findByArtistName(artistName);
+        List<Album> albumList = albumRepository.findByArtistName(artistName);
+        return albumList.isEmpty() ? null : albumList;
     }
 
     private boolean submittedAlbumIsValid(SubmittedAlbumDTO submittedAlbumDTO) {
