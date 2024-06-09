@@ -80,6 +80,14 @@ public class RecordShopServiceImpl implements RecordShopService{
         return albumStockDTO;
     }
 
+    @Override
+    public boolean deleteById(int id) {
+        if(!albumRepository.existsById(id)) return false;
+        albumRepository.deleteById(id);
+        stockRepository.deleteByAlbumId(id);
+        return true;
+    }
+
     private boolean submittedAlbumIsValid(SubmittedAlbumDTO submittedAlbumDTO) {
         if (submittedAlbumDTO.getAlbumName() == null) return false;
         if (submittedAlbumDTO.getArtistName() == null) return false;

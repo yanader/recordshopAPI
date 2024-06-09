@@ -209,7 +209,34 @@ class RecordShopServiceImplTest {
 
         assertNull(firstAlbumStockDTO);
         verify(mockAlbumRepository, times(1)).existsById(0);
+    }
 
+    @Test
+    void deleteAlbumByIdIsSuccessful() {
+
+        when(mockAlbumRepository.existsById(1)).thenReturn(true);
+
+        boolean result = service.deleteById(1);
+
+        assertTrue(result);
+
+        verify(mockAlbumRepository, times(1)).existsById(1);
+        verify(mockAlbumRepository, times(1)).deleteById(1);
+        verify(mockStockRepository, times(1)).deleteByAlbumId(1);
+    }
+
+    @Test
+    void deleteAlbumByIdFailsWithInvalidId() {
+
+        when(mockAlbumRepository.existsById(1)).thenReturn(false);
+
+        boolean result = service.deleteById(1);
+
+        assertFalse(result);
+
+        verify(mockAlbumRepository, times(1)).existsById(1);
+        verify(mockAlbumRepository, times(0)).deleteById(1);
+        verify(mockStockRepository, times(0)).deleteByAlbumId(1);
     }
 
 
