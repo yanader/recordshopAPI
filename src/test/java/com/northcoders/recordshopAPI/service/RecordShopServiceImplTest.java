@@ -362,8 +362,47 @@ class RecordShopServiceImplTest {
         assertNull(albumStockDTO);
         verify(mockAlbumRepository, times(1)).findByAlbumName("bleach");
         verify(mockStockRepository, times(0)).findAllByAlbumId(anyLong());
+    }
 
+    @Test
+    void patchUpdateAlbum() {
+        Album albumToUpdate = new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK);
+        Stock updateStock = new Stock(1L, 1L, 1099, 1);
+        UpdateAlbumDTO updates = new UpdateAlbumDTO("Owls", "Owls", LocalDate.of(1999, 1, 1), Genre.POP, 500, 100);
+        Album albumUpdates = new Album("Owls", "Owls", LocalDate.of(1999, 1, 1), Genre.POP);
+
+        when(mockAlbumRepository.existsById(anyInt())).thenReturn(true);
+        when(mockAlbumRepository.findById(anyInt())).thenReturn(Optional.of(albumToUpdate));
+        when(mockStockRepository.findAllByAlbumId(anyLong())).thenReturn(Optional.of(updateStock));
+        when(mockAlbumRepository.save(any(Album.class))).thenReturn(albumUpdates);
+
+        Album updatedAlbum = service.updateAlbumDetails(1L, updates);
+
+        assertEquals("owls", updatedAlbum.getAlbumName());
+        assertEquals("owls", updatedAlbum.getArtistName());
+        assertEquals(Genre.POP, updatedAlbum.getGenre());
+
+        verify(mockAlbumRepository, times(1)).findById(anyInt());
+        verify(mockStockRepository, times(1)).save(updateStock);
+        verify(mockAlbumRepository, times(1)).save(albumToUpdate);
+    }
+
+    @Test
+    void patchUpdateAlbumRejectsInvalidId() {
+        when(mockAlbumRepository.existsById(anyInt())).thenReturn(false);
+        UpdateAlbumDTO updates = new UpdateAlbumDTO("Owls", "Owls", LocalDate.of(1999, 1, 1), Genre.POP, 500, 100);
+
+        Album updatedAlbum = service.updateAlbumDetails(1, updates);
+
+        assertNull(updatedAlbum);
+
+        verify(mockAlbumRepository, times(1)).existsById(anyInt());
+        verify(mockAlbumRepository, times(0)).findById(anyInt());
+        verify(mockStockRepository, times(0)).findAllByAlbumId(anyInt());
+        verify(mockStockRepository, times(0)).save(any(Stock.class));
+        verify(mockAlbumRepository, times(0)).save(any(Album.class));
 
     }
+
 
 }

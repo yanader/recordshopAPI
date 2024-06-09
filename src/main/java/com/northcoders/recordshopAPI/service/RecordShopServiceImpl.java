@@ -121,6 +121,25 @@ public class RecordShopServiceImpl implements RecordShopService{
         return new AlbumStockDTO(album.getAlbumId(), album.getAlbumName(), album.getArtistName(), stock.getNumberInStock(), (double)stock.getPriceInPence() / 100);
     }
 
+    @Override
+    public Album updateAlbumDetails(long id, UpdateAlbumDTO updates) {
+        if (!albumRepository.existsById((int)id)) return null;
+        Optional<Album> optionalAlbum = albumRepository.findById((int)id);
+        Optional<Stock> optionalStock = stockRepository.findAllByAlbumId(id);
+        Album albumToUpdate = optionalAlbum.orElse(null);
+        Stock stockToUpdate = optionalStock.orElse(null);
+        assert stockToUpdate != null;
+        if (updates.getPriceInPence() != null) stockToUpdate.setPriceInPence(updates.getPriceInPence());
+        if (updates.getQuantity() != null) stockToUpdate.setNumberInStock(updates.getQuantity());
+        stockRepository.save(stockToUpdate);
+        assert albumToUpdate != null;
+        if (updates.getAlbumName() != null) albumToUpdate.setAlbumName(updates.getAlbumName());
+        if (updates.getArtistName() != null) albumToUpdate.setArtistName(updates.getArtistName());
+        if (updates.getReleaseDate() != null) albumToUpdate.setReleaseDate(updates.getReleaseDate());
+        if (updates.getGenre() != null) albumToUpdate.setGenre(updates.getGenre());
+        return albumRepository.save(albumToUpdate);
+    }
+
     private boolean submittedAlbumIsValid(SubmittedAlbumDTO submittedAlbumDTO) {
         if (submittedAlbumDTO.getAlbumName() == null) return false;
         if (submittedAlbumDTO.getArtistName() == null) return false;
