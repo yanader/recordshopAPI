@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class PostAlbumDTO {
+public class SubmittedAlbumDTO {
     String albumName;
     String artistName;
     Integer priceInPence;

@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -131,7 +132,7 @@ class RecordShopControllerTest {
 
     @Test
     void postAlbumPostsSuccessfullyWithFullBody() throws Exception {
-        PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", "Owls", 1899, LocalDate.EPOCH, Genre.ROCK);
+        SubmittedAlbumDTO albumToPost = new SubmittedAlbumDTO("Owls", "Owls", 1899, LocalDate.EPOCH, Genre.ROCK);
         Album addedAlbum = new Album(0L, "Owls", "Owls", LocalDate.now(), Genre.ROCK);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(addedAlbum);
@@ -148,7 +149,7 @@ class RecordShopControllerTest {
 
     @Test
     void postAlbumPostsSuccessfullyWithMinimalBody() throws Exception {
-        PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", "Owls", null, null, null);
+        SubmittedAlbumDTO albumToPost = new SubmittedAlbumDTO("Owls", "Owls", null, null, null);
         Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(addedAlbum);
@@ -164,7 +165,7 @@ class RecordShopControllerTest {
 
     @Test
     void postAlbumRejectsAlbumWithMissingDetails() throws Exception {
-        PostAlbumDTO albumToPost = new PostAlbumDTO("Owls", null, 1899, null, null);
+        SubmittedAlbumDTO albumToPost = new SubmittedAlbumDTO("Owls", null, 1899, null, null);
         Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(null);
@@ -177,5 +178,38 @@ class RecordShopControllerTest {
                                 .content(mapper.writeValueAsString(albumToPost)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.status().reason(mockService.invalidPostMessage()));
+    }
+
+    @Test
+    void putAlbumPutsAlbumSuccessfully() throws Exception {
+        SubmittedAlbumDTO albumToPut = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
+
+        AlbumStockDTO albumStockDTO = new AlbumStockDTO(1, "Nevermind", "Nirvana", 1, 10.99);
+
+        when(mockService.putAlbum(albumToPut, 1)).thenReturn(albumStockDTO);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.put("/api/v1/recordstore/albums/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(albumToPut)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.albumName").value("Nevermind"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Nirvana"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value("1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.priceInPounds").value("10.99"));
+    }
+
+    @Test
+    void putAlbumFailsWithMissingId() throws Exception {
+        SubmittedAlbumDTO albumToPut = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
+
+        when(mockService.putAlbum(albumToPut, 1)).thenReturn(null);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/recordstore/albums/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(albumToPut)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().reason("Error: Missing body or missing albumID"));
     }
 }

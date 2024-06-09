@@ -6,7 +6,6 @@ import com.northcoders.recordshopAPI.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +39,8 @@ public class RecordShopServiceImpl implements RecordShopService{
     }
 
     @Override
-    public Album addAlbum(PostAlbumDTO albumToPost) {
-        if (!validPostAlbumDTO(albumToPost)) return null;
+    public Album addAlbum(SubmittedAlbumDTO albumToPost) {
+        if (!submittedAlbumIsValid(albumToPost)) return null;
 
         Optional<Album> optionalAlbumToAdd = albumRepository.findByAlbumNameAndArtistName(albumToPost.getAlbumName(), albumToPost.getArtistName());
         Optional<Stock> optionalStockToAdd = Optional.empty();
@@ -64,12 +63,29 @@ public class RecordShopServiceImpl implements RecordShopService{
         return addedAlbum;
     }
 
-    private boolean validPostAlbumDTO(PostAlbumDTO postAlbumDTO) {
-        if (postAlbumDTO.getAlbumName() == null) return false;
-        if (postAlbumDTO.getArtistName() == null) return false;
-        if (postAlbumDTO.getPriceInPence() == null) return false;
-        if (postAlbumDTO.getReleaseDate() == null) return false;
-        if (postAlbumDTO.getGenre() == null) return false;
+    @Override
+    public AlbumStockDTO putAlbum(SubmittedAlbumDTO albumToPut, int idToPutAt) {
+        if (!submittedAlbumIsValid(albumToPut)) return null;
+        if (!albumRepository.existsById(idToPutAt)) return null;
+        Album newAlbum = new Album(idToPutAt, albumToPut.getAlbumName(), albumToPut.getArtistName(), albumToPut.getReleaseDate(), albumToPut.getGenre());
+        albumRepository.save(newAlbum);
+        Optional<Stock> stock = stockRepository.findAllByAlbumId(idToPutAt);
+        if (stock.isPresent()) {
+            stock.get().setPriceInPence(albumToPut.getPriceInPence());
+        } else {
+            stockRepository.save(new Stock(idToPutAt, albumToPut.getPriceInPence(), 1));
+        }
+        Stock stockItem = stockRepository.findAllByAlbumId(idToPutAt).get();
+        AlbumStockDTO albumStockDTO = new AlbumStockDTO(newAlbum.getAlbumId(), newAlbum.getAlbumName(), newAlbum.getArtistName(), stockItem.getNumberInStock(), stockItem.getPriceInPence());
+        return albumStockDTO;
+    }
+
+    private boolean submittedAlbumIsValid(SubmittedAlbumDTO submittedAlbumDTO) {
+        if (submittedAlbumDTO.getAlbumName() == null) return false;
+        if (submittedAlbumDTO.getArtistName() == null) return false;
+        if (submittedAlbumDTO.getPriceInPence() == null) return false;
+        if (submittedAlbumDTO.getReleaseDate() == null) return false;
+        if (submittedAlbumDTO.getGenre() == null) return false;
         return true;
     }
 
