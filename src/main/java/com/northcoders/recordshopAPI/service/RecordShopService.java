@@ -16,4 +16,5 @@ public interface RecordShopService {
     AlbumStockDTO putAlbum(SubmittedAlbumDTO albumToPut, int idToPutAt);
     boolean deleteById(int id);
     List<Album> getAllAlbumsByArtistName(String artistName);
+    List<Album> getAlbumsByYear(int year);
 }
