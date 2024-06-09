@@ -111,6 +111,16 @@ public class RecordShopServiceImpl implements RecordShopService{
         return albumList.isEmpty() ? null : albumList;
     }
 
+    @Override
+    public AlbumStockDTO getAlbumDetailsByAlbumName(String albumName) {
+        Optional<Album> optionalAlbum = albumRepository.findByAlbumName(albumName);
+        if (optionalAlbum.isEmpty()) return null;
+        Album album = optionalAlbum.get();
+        Optional<Stock> optionalStock = stockRepository.findAllByAlbumId(album.getAlbumId());
+        Stock stock = optionalStock.orElse(null);
+        return new AlbumStockDTO(album.getAlbumId(), album.getAlbumName(), album.getArtistName(), stock.getNumberInStock(), (double)stock.getPriceInPence() / 100);
+    }
+
     private boolean submittedAlbumIsValid(SubmittedAlbumDTO submittedAlbumDTO) {
         if (submittedAlbumDTO.getAlbumName() == null) return false;
         if (submittedAlbumDTO.getArtistName() == null) return false;
