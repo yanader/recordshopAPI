@@ -1,9 +1,6 @@
 package com.northcoders.recordshopAPI.controller;
 
-import com.northcoders.recordshopAPI.model.Album;
-import com.northcoders.recordshopAPI.model.AlbumDTO;
-import com.northcoders.recordshopAPI.model.AlbumStockDTO;
-import com.northcoders.recordshopAPI.model.SubmittedAlbumDTO;
+import com.northcoders.recordshopAPI.model.*;
 import com.northcoders.recordshopAPI.service.RecordShopService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,6 +111,16 @@ public class RecordShopController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No album called " + name + " in stock");
         } else {
             return new ResponseEntity<>(albumStockDTO, HttpStatus.OK);
+        }
+    }
+
+    @PatchMapping(value="/albums/{id}")
+    public ResponseEntity<Album> updateAlbumAndStock(@PathVariable int id, @RequestBody UpdateAlbumDTO updates) {
+        Album updatedAlbum = recordShopService.updateAlbumDetails(id, updates);
+        if (updatedAlbum == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No album with id " + id + " exists");
+        } else {
+            return new ResponseEntity<>(updatedAlbum, HttpStatus.OK);
         }
     }
 

@@ -19,7 +19,7 @@ FIVE        DONE            DONE            DONE            DONE            DONE
 SIX         DONE            DONE            DONE            DONE            DONE
 SEVEN       DONE            DONE            DONE            DONE            DONE
 PUT         DONE            DONE            DONE            DONE            DONE
-EIGHT
+EIGHT       DONE            DONE            DONE            DONE            DONE
 NINE        DONE            DONE            DONE            DONE            DONE
 HEALTH
 
