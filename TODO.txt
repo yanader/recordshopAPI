@@ -15,7 +15,7 @@ ONE         DONE            DONE            DONE            DONE            DONE
 TWO         DONE            DONE            DONE            DONE            DONE
 THREE       DONE            DONE            DONE            DONE            DONE
 FOUR        DONE            DONE            DONE            DONE            DONE
-FIVE
+FIVE        DONE            DONE            DONE
 SIX
 SEVEN       DONE            DONE            DONE            DONE            DONE
 PUT         DONE            DONE            DONE            DONE            DONE

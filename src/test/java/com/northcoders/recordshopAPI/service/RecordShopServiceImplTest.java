@@ -289,7 +289,7 @@ class RecordShopServiceImplTest {
     }
 
     @Test
-    void getAllAlbumsFilterByReleaseYearReturnsEmptyList() {
+    void getAllAlbumsFilterByReleaseYearReturnsNull() {
         List<Album> emptyList = List.of();
 
         int year = 1970;
@@ -304,7 +304,34 @@ class RecordShopServiceImplTest {
         verify(mockAlbumRepository,times(1)).findByReleaseDateBetween(start, end);
     }
 
+    @Test
+    void getAllAlbumsByGenreReturnsList() {
+        List<Album> albumList = List.of(
+                new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK),
+                new Album("nevermind", "nirvana", LocalDate.EPOCH, Genre.ROCK)
+        );
 
+        when(mockAlbumRepository.findByGenre(Genre.ROCK)).thenReturn(albumList);
+
+        List<Album> resultsList = service.getAlbumsByGenre("ROCK");
+
+        assertEquals(2, resultsList.size());
+        assertEquals("bleach", resultsList.get(0).getAlbumName());
+        assertEquals("nevermind", resultsList.get(1).getAlbumName());
+        verify(mockAlbumRepository,times(1)).findByGenre(Genre.ROCK);
+    }
+
+    @Test
+    void getAllAlbumsByGenreReturnsNull() {
+        List<Album> emptyList = List.of();
+
+        when(mockAlbumRepository.findByGenre(Genre.ROCK)).thenReturn(emptyList);
+
+        List<Album> resultsList = service.getAlbumsByGenre("ROCK");
+
+        assertNull(resultsList);
+        verify(mockAlbumRepository,times(1)).findByGenre(Genre.ROCK);
+    }
 
 
 }

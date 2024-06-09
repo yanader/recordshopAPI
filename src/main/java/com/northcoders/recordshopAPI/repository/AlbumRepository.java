@@ -2,6 +2,7 @@ package com.northcoders.recordshopAPI.repository;
 
 import com.northcoders.recordshopAPI.model.Album;
 import com.northcoders.recordshopAPI.model.AlbumStockDTO;
+import com.northcoders.recordshopAPI.model.Genre;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -34,6 +35,8 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
     List<Album> findByArtistName(String artistName);
 
     List<Album> findByReleaseDateBetween(LocalDate start, LocalDate end);
+
+    List<Album> findByGenre(Genre genre);
 }
 
 
