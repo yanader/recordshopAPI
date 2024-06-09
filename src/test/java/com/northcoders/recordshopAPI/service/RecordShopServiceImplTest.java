@@ -333,5 +333,37 @@ class RecordShopServiceImplTest {
         verify(mockAlbumRepository,times(1)).findByGenre(Genre.ROCK);
     }
 
+    @Test
+    void getAlbumByAlbumNameReturnsAlbum() {
+        Album album = new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK);
+        Stock stock = new Stock(1L, 0L, 1050, 2);
+
+
+        when(mockAlbumRepository.findByAlbumName("bleach")).thenReturn(Optional.of(album));
+        when(mockStockRepository.findAllByAlbumId(0L)).thenReturn(Optional.of(stock));
+
+        AlbumStockDTO albumStockDTO = service.getAlbumDetailsByAlbumName("bleach");
+
+        assertNotNull(albumStockDTO);
+        assertEquals(2, albumStockDTO.getQuantity());
+        assertEquals(10.50, albumStockDTO.getPriceInPounds());
+
+        verify(mockAlbumRepository, times(1)).findByAlbumName("bleach");
+        verify(mockStockRepository, times(1)).findAllByAlbumId(0L);
+
+    }
+
+    @Test
+    void getAlbumByAlbumNameReturnsNull() {
+        when(mockAlbumRepository.findByAlbumName("bleach")).thenReturn(Optional.empty());
+
+        AlbumStockDTO albumStockDTO = service.getAlbumDetailsByAlbumName("bleach");
+
+        assertNull(albumStockDTO);
+        verify(mockAlbumRepository, times(1)).findByAlbumName("bleach");
+        verify(mockStockRepository, times(0)).findAllByAlbumId(anyLong());
+
+
+    }
 
 }
