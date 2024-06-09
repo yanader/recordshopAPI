@@ -3,6 +3,7 @@ package com.northcoders.recordshopAPI.service;
 import com.northcoders.recordshopAPI.model.*;
 import com.northcoders.recordshopAPI.repository.AlbumRepository;
 import com.northcoders.recordshopAPI.repository.StockRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +82,7 @@ public class RecordShopServiceImpl implements RecordShopService{
     }
 
     @Override
+    @Transactional
     public boolean deleteById(int id) {
         if(!albumRepository.existsById(id)) return false;
         albumRepository.deleteById(id);
