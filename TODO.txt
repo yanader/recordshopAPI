@@ -9,18 +9,18 @@ add some customisation to /health
 
 User Stories (reference from resources/*.png
 
-            REPOSITORY      SERVICE     CONTROLLER      SERV-TEST      CONT-TEST
-INIT        DONE            DONE        DONE            DONE            DONE
-ONE         DONE            DONE        DONE            DONE            DONE
-TWO         DONE            DONE        DONE            DONE            DONE
-THREE       DONE            DONE                        DONE
+            REPOSITORY      SERV-TEST       SERVICE      CONT-TEST      CONTROLLER
+INIT        DONE            DONE            DONE            DONE            DONE
+ONE         DONE            DONE            DONE            DONE            DONE
+TWO         DONE            DONE            DONE            DONE            DONE
+THREE       DONE            DONE            DONE            DONE            DONE
 FOUR
 FIVE
 SIX
-SEVEN       DONE            DONE        DONE            DONE            DONE
-PUT         DONE            DONE        DONE            DONE            DONE
+SEVEN       DONE            DONE            DONE            DONE            DONE
+PUT         DONE            DONE            DONE            DONE            DONE
 EIGHT
-NINE        DONE            DONE        DONE            DONE            DONE
+NINE        DONE            DONE            DONE            DONE            DONE
 
 
 
