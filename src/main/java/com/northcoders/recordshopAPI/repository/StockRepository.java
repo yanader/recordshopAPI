@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface StockRepository extends CrudRepository<Stock, Integer> {
 
     Optional<Stock> findAllByAlbumId(long id);
+    void deleteByAlbumId(long id);
 }

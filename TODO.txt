@@ -20,7 +20,7 @@ SIX
 SEVEN       DONE            DONE        DONE            DONE            DONE
 PUT         DONE            DONE        DONE            DONE            DONE
 EIGHT
-NINE
+NINE        DONE            DONE        DONE            DONE            DONE
 
 
 

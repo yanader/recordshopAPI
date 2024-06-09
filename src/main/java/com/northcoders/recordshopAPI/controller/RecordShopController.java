@@ -64,4 +64,14 @@ public class RecordShopController {
             return new ResponseEntity<>(albumStockDTO, HttpStatus.CREATED);
         }
     }
+
+    @DeleteMapping(value="albums/{id}")
+    public ResponseEntity<String> deleteAlbum(@PathVariable int id) {
+        boolean result = recordShopService.deleteById(id);
+        if (result) {
+            return new ResponseEntity<>("Id " + id + " successfully deleted", HttpStatus.ACCEPTED);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Deletion failed. No record at id " + id);
+        }
+    }
 }

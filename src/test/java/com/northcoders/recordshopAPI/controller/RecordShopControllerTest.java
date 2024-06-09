@@ -212,4 +212,24 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.status().reason("Error: Missing body or missing albumID"));
     }
+
+    @Test
+    void deleteAlbumDeletesAndConfirmsCorrectly() throws Exception{
+        when(mockService.deleteById(1)).thenReturn(true);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.delete("/api/v1/recordstore/albums/1"))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andExpect(MockMvcResultMatchers.content().string("Id 1 successfully deleted"));
+    }
+
+    @Test
+    void deleteAlbumConfirmsDeleteFailed() throws Exception {
+        when(mockService.deleteById(1)).thenReturn(false);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/recordstore/albums/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("Deletion failed. No record at id 1"));
+    }
 }
