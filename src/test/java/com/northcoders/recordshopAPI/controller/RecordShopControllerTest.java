@@ -313,6 +313,28 @@ class RecordShopControllerTest {
                 .andExpect(MockMvcResultMatchers.status().reason("We have no albums in genre: ROCK"));
     }
 
+    @Test
+    void getAlbumDetailsByAlbumName() throws Exception {
+        AlbumStockDTO albumStockDTO = new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2, 10.99 );
+
+        when(mockService.getAlbumDetailsByAlbumName("nevermind")).thenReturn(albumStockDTO);
+
+        this.mockMvcController.perform(
+                MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("name", "nevermind"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Nirvana"));
+    }
+
+    @Test
+    void getAlbumDetailsReturnsError() throws Exception {
+        when(mockService.getAlbumDetailsByAlbumName("nevermind")).thenReturn(null);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("name", "nevermind"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.status().reason("No album called nevermind in stock"));
+    }
+
 
 
 
