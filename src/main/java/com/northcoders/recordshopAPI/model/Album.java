@@ -29,15 +29,15 @@ public class Album {
     private Genre genre;
 
     public Album(String albumName, String artistName, LocalDate releaseDate, Genre genre) {
-        this.albumName = albumName;
-        this.artistName = artistName;
+        this.albumName = albumName.toLowerCase();
+        this.artistName = artistName.toLowerCase();
         this.releaseDate = releaseDate;
         this.genre = genre;
     }
 
     public Album(String albumName, String artistName) {
-        this.albumName = albumName;
-        this.artistName = artistName;
+        this.albumName = albumName.toLowerCase();
+        this.artistName = artistName.toLowerCase();
     }
 
 
