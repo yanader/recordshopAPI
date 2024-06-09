@@ -14,7 +14,7 @@ INIT        DONE            DONE            DONE            DONE            DONE
 ONE         DONE            DONE            DONE            DONE            DONE
 TWO         DONE            DONE            DONE            DONE            DONE
 THREE       DONE            DONE            DONE            DONE            DONE
-FOUR
+FOUR        DONE            DONE            DONE            DONE            DONE
 FIVE
 SIX
 SEVEN       DONE            DONE            DONE            DONE            DONE
