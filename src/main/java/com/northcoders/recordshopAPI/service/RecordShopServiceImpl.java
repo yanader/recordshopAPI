@@ -79,7 +79,7 @@ public class RecordShopServiceImpl implements RecordShopService{
             stockRepository.save(new Stock(idToPutAt, albumToPut.getPriceInPence(), 1));
         }
         Stock stockItem = stockRepository.findAllByAlbumId(idToPutAt).get();
-        AlbumStockDTO albumStockDTO = new AlbumStockDTO(newAlbum.getAlbumId(), newAlbum.getAlbumName(), newAlbum.getArtistName(), stockItem.getNumberInStock(), stockItem.getPriceInPence());
+        AlbumStockDTO albumStockDTO = new AlbumStockDTO(newAlbum.getAlbumId(), newAlbum.getAlbumName(), newAlbum.getArtistName(), stockItem.getNumberInStock(), (double)stockItem.getPriceInPence() / 100);
         return albumStockDTO;
     }
 
