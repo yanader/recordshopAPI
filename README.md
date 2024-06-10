@@ -223,6 +223,7 @@ The codebase is split into a number of packages.
    - After searching for an album ID that doesn't exist, the user will additionally be presented with a staff pick!
 2. Command Line Interface
    - As an alternative to the API, customers will be able to interact with our database through the command line
+   - Currently under construction on branch "cli"
 3. Security!
    - User profiles will be used to separate customer endpoints from staff endpoints. As a customer you'll be able to query the database as much as you like but only staff will be able to update it.
 4. Multiple Query Parameters
