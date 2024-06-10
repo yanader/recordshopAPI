@@ -1,10 +1,5 @@
 ----TODO----
 
-Refactor
-Make sure we are always returning DTO objects to the endpoints. (AKA all service methods should return DTOs)
-
-
-
 README
 
 CLI
