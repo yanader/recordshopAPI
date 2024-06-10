@@ -3,8 +3,7 @@
 Refactor
 Make sure we are always returning DTO objects to the endpoints. (AKA all service methods should return DTOs)
 
-Bug
-GET album by name returns error if more than one album has the same name
+
 
 README
 
@@ -41,3 +40,6 @@ PUT         DONE            DONE            DONE            DONE            DONE
 EIGHT       DONE            DONE            DONE            DONE            DONE
 NINE        DONE            DONE            DONE            DONE            DONE
 HEALTH      ----            ----            ----            ----            DONE
+
+Bug FIXED
+GET album by name returns error if more than one album has the same name

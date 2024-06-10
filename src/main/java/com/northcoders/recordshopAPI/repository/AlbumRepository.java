@@ -36,7 +36,7 @@ public interface AlbumRepository extends CrudRepository<Album, Integer> {
 
     List<Album> findByGenre(Genre genre);
 
-    Optional<Album> findByAlbumName(String albumName);
+    List<Album> findByAlbumName(String albumName);
 }
 
 

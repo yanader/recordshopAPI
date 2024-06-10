@@ -106,12 +106,12 @@ public class RecordShopController {
     }
 
     @GetMapping(value="/albums", params="name")
-    public ResponseEntity<AlbumStockDTO> getAlbumByName(@RequestParam String name) {
-        AlbumStockDTO albumStockDTO = recordShopService.getAlbumDetailsByAlbumName(name.toLowerCase());
-        if (albumStockDTO == null) {
+    public ResponseEntity<List<AlbumStockDTO>> getAlbumByName(@RequestParam String name) {
+        List<AlbumStockDTO> albumStockDTOList = recordShopService.getAlbumDetailsByAlbumName(name.toLowerCase());
+        if (albumStockDTOList == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No album called " + name + " in stock");
         } else {
-            return new ResponseEntity<>(albumStockDTO, HttpStatus.OK);
+            return new ResponseEntity<>(albumStockDTOList, HttpStatus.OK);
         }
     }
 

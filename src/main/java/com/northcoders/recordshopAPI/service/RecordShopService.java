@@ -15,6 +15,6 @@ public interface RecordShopService {
     List<Album> getAllAlbumsByArtistName(String artistName);
     List<Album> getAlbumsByYear(int year);
     List<Album> getAlbumsByGenre(String genre);
-    AlbumStockDTO getAlbumDetailsByAlbumName(String albumName);
+    List<AlbumStockDTO> getAlbumDetailsByAlbumName(String albumName);
     Album updateAlbumDetails(long id, UpdateAlbumDTO updates);
 }

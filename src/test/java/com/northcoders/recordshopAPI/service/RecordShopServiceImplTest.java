@@ -335,31 +335,57 @@ class RecordShopServiceImplTest {
 
     @Test
     void getAlbumByAlbumNameReturnsAlbum() {
-        Album album = new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK);
+        List<Album> albumList = List.of(
+                new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK)
+                );
+
         Stock stock = new Stock(1L, 0L, 1050, 2);
 
-
-        when(mockAlbumRepository.findByAlbumName("bleach")).thenReturn(Optional.of(album));
+        when(mockAlbumRepository.findByAlbumName("bleach")).thenReturn(albumList);
         when(mockStockRepository.findAllByAlbumId(0L)).thenReturn(Optional.of(stock));
 
-        AlbumStockDTO albumStockDTO = service.getAlbumDetailsByAlbumName("bleach");
+        List<AlbumStockDTO> albumStockDTOList = service.getAlbumDetailsByAlbumName("bleach");
 
-        assertNotNull(albumStockDTO);
-        assertEquals(2, albumStockDTO.getQuantity());
-        assertEquals(10.50, albumStockDTO.getPriceInPounds());
+        assertNotNull(albumStockDTOList);
+        assertEquals(2, albumStockDTOList.getFirst().getQuantity());
+        assertEquals(10.50, albumStockDTOList.getFirst().getPriceInPounds());
 
         verify(mockAlbumRepository, times(1)).findByAlbumName("bleach");
         verify(mockStockRepository, times(1)).findAllByAlbumId(0L);
+    }
+
+    @Test
+    void getAlbumByAlbumNameReturnsMoreThanOneAlbum() {
+        List<Album> albumList = List.of(
+                new Album("bleach", "nirvana", LocalDate.EPOCH, Genre.ROCK),
+                new Album("bleach", "palace", LocalDate.EPOCH, Genre.ROCK)
+        );
+
+        Stock stockOne = new Stock(1L, 0L, 1050, 2);
+        Stock stockTwo = new Stock(1L, 0L, 1100, 2);
+
+        when(mockAlbumRepository.findByAlbumName("bleach")).thenReturn(albumList);
+        when(mockStockRepository.findAllByAlbumId(0L)).thenReturn(Optional.of(stockOne)).thenReturn(Optional.of(stockTwo));
+
+        List<AlbumStockDTO> albumStockDTOList = service.getAlbumDetailsByAlbumName("bleach");
+        assertNotNull(albumStockDTOList);
+        assertEquals("Nirvana", albumStockDTOList.getFirst().getArtistName());
+        assertEquals(10.50, albumStockDTOList.getFirst().getPriceInPounds());
+        assertEquals("Palace", albumStockDTOList.get(1).getArtistName());
+        assertEquals(11.00, albumStockDTOList.get(1).getPriceInPounds());
+
+        verify(mockAlbumRepository, times(1)).findByAlbumName("bleach");
+        verify(mockStockRepository, times(2)).findAllByAlbumId(anyLong());
 
     }
 
     @Test
     void getAlbumByAlbumNameReturnsNull() {
-        when(mockAlbumRepository.findByAlbumName("bleach")).thenReturn(Optional.empty());
+        when(mockAlbumRepository.findByAlbumName("bleach")).thenReturn(List.of());
 
-        AlbumStockDTO albumStockDTO = service.getAlbumDetailsByAlbumName("bleach");
+        List<AlbumStockDTO> albumStockDTOList = service.getAlbumDetailsByAlbumName("bleach");
 
-        assertNull(albumStockDTO);
+        assertNull(albumStockDTOList);
         verify(mockAlbumRepository, times(1)).findByAlbumName("bleach");
         verify(mockStockRepository, times(0)).findAllByAlbumId(anyLong());
     }

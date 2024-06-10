@@ -31,6 +31,7 @@ public class RecordShopServiceImpl implements RecordShopService{
 
     @Override
     public List<AlbumStockDTO> getAllInStockAlbums() {
+
         return new ArrayList<>(albumRepository.findAlbumsInStock());
     }
 
@@ -112,13 +113,19 @@ public class RecordShopServiceImpl implements RecordShopService{
     }
 
     @Override
-    public AlbumStockDTO getAlbumDetailsByAlbumName(String albumName) {
-        Optional<Album> optionalAlbum = albumRepository.findByAlbumName(albumName);
-        if (optionalAlbum.isEmpty()) return null;
-        Album album = optionalAlbum.get();
-        Optional<Stock> optionalStock = stockRepository.findAllByAlbumId(album.getAlbumId());
-        Stock stock = optionalStock.orElse(null);
-        return new AlbumStockDTO(album.getAlbumId(), album.getAlbumName(), album.getArtistName(), stock.getNumberInStock(), (double)stock.getPriceInPence() / 100);
+    public List<AlbumStockDTO> getAlbumDetailsByAlbumName(String albumName) {
+        List<Album> albumList = albumRepository.findByAlbumName(albumName);
+        if (albumList.isEmpty()) return null;
+
+        List<AlbumStockDTO> resultList = new ArrayList<>();
+
+        for (Album a : albumList) {
+            Optional<Stock> optionalStock = stockRepository.findAllByAlbumId(a.getAlbumId());
+            Stock s = optionalStock.orElse(null);
+            resultList.add(new AlbumStockDTO(a.getAlbumId(), a.getAlbumName(), a.getArtistName(), s.getNumberInStock(), (double)s.getPriceInPence() / 100));
+        }
+
+        return resultList;
     }
 
     @Override
