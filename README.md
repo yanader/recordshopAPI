@@ -21,21 +21,22 @@ The base endpoint for this service.
 
 #### GET ```/instock```
 Returns a list of in-stock albums
-```json[
-{
-"albumId": 1,
-"albumName": "Zuma",
-"artistName": "Neil young",
-"quantity": 2,
-"priceInPounds": 15.0
-},
-{
-"albumId": 2,
-"albumName": "Close to the edge",
-"artistName": "Yes",
-"quantity": 3,
-"priceInPounds": 17.0
-}
+```json
+[
+   {
+      "albumId": 1,
+      "albumName": "Zuma",
+      "artistName": "Neil young",
+      "quantity": 2,
+      "priceInPounds": 15.0
+   },
+   {
+      "albumId": 2,
+      "albumName": "Close to the edge",
+      "artistName": "Yes",
+      "quantity": 3,
+      "priceInPounds": 17.0
+   }
 ]
 ```
 
