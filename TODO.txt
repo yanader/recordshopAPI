@@ -3,6 +3,8 @@
 README
 
 Capitalisation causing bug in POST
+PUT return conversion between pence/pounds is wrong
+PUT error response needs to be expanded (should match error from POST)
 
 CLI
 

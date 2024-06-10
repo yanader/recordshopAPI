@@ -9,7 +9,7 @@ public interface RecordShopService {
     List<AlbumStockDTO> getAllInStockAlbums();
     AlbumStockDTO getAlbumDTOById(int id);
     Album addAlbum(SubmittedAlbumDTO albumToPost);
-    String invalidPostMessage();
+    String invalidSubmitMessage();
     AlbumStockDTO putAlbum(SubmittedAlbumDTO albumToPut, int idToPutAt);
     boolean deleteById(int id);
     List<Album> getAllAlbumsByArtistName(String artistName);

@@ -169,7 +169,7 @@ class RecordShopControllerTest {
         Album addedAlbum = new Album(0L, "Owls", "Owls", null, null);
 
         when(mockService.addAlbum(albumToPost)).thenReturn(null);
-        when(mockService.invalidPostMessage()).thenCallRealMethod();
+        when(mockService.invalidSubmitMessage()).thenCallRealMethod();
 
 
         this.mockMvcController.perform(
@@ -177,7 +177,7 @@ class RecordShopControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(albumToPost)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.status().reason(mockService.invalidPostMessage()));
+                .andExpect(MockMvcResultMatchers.status().reason(mockService.invalidSubmitMessage()));
     }
 
     @Test
@@ -204,13 +204,14 @@ class RecordShopControllerTest {
         SubmittedAlbumDTO albumToPut = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.EPOCH, Genre.ROCK);
 
         when(mockService.putAlbum(albumToPut, 1)).thenReturn(null);
+        when(mockService.invalidSubmitMessage()).thenCallRealMethod();
 
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.put("/api/v1/recordstore/albums/1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(albumToPut)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.status().reason("Error: Missing body or missing albumID"));
+                .andExpect(MockMvcResultMatchers.status().reason(mockService.invalidSubmitMessage()));
     }
 
     @Test

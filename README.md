@@ -97,16 +97,104 @@ Returns album information based on its id or advises an album doesn't exist.
 ```
 
 #### POST ```/albums/add```
+Adds an album into the database. Responds with the same album details or an error message.
 
+##### Body
+```json
+{
+    "albumName": "oh how we drift away",
+    "artistName": "tim heidecker",
+    "priceInPence": 1199,
+    "releaseDate": "2020-09-25",
+    "genre": "COUNTRY"
+}
+```
+##### Response
+```json
+{
+    "albumId": 6,
+    "albumName": "oh how we drift away",
+    "artistName": "tim heidecker",
+    "releaseDate": "2020-09-25",
+    "genre": "COUNTRY"
+}
+```
+##### Error
+```json
+{
+    "status": 400,
+    "message": "Missing Details: albumName, artistName, priceInPence, releaseDate(yyyy-mm-dd), genre(See documentation for list)"
+}
+```
 
 #### PUT ```/albums/{id}```
+Updates an existing album with id based on path variable. Requires full body in request
 
+##### Body
+```json
+{
+   "albumName": "Owls",
+   "artistName": "Owls",
+   "priceInPence": 1299,
+   "releaseDate": "2001-07-31",
+   "genre": "JAZZ"
+}
+```
+##### Response
+```json
+{
+   "albumId": 6,
+   "albumName": "Owls",
+   "artistName": "Owls",
+   "quantity": 1,
+   "priceInPounds": 12.99
+}
+```
+##### Error
+```json
+{
+    "status": 400,
+    "message": "Missing Details: albumName, artistName, priceInPence, releaseDate(yyyy-mm-dd), genre(See documentation for list)"
+}
+```
 
 #### DELETE ```/albums/{id}```
+Deletes album based on path variable
 
+##### Error
+```json
+{
+   "status": 404,
+   "message": "Deletion failed. No record at id 6"
+}
+```
 
 #### PATCH ```/albums/{id}```
+Update selected fields on the album id specified in path variable. This endpoint allows any combination of attributes to be included in the body.
 
+##### Body
+```json
+{
+   "priceInPence": 1799
+}
+```
+##### Response
+```json
+{
+   "albumId": 1,
+   "albumName": "zuma",
+   "artistName": "neil young",
+   "releaseDate": "1975-11-10",
+   "genre": "ROCK"
+}
+```
+##### Error
+```json
+{
+   "status": 404,
+   "message": "No album with id 10 exists"
+}
+```
 
 #### GET ```/health```
 Standard /health endpoint supplied through Spring Actuator via redirect

@@ -156,7 +156,7 @@ public class RecordShopServiceImpl implements RecordShopService{
         return true;
     }
 
-    public String invalidPostMessage() {
+    public String invalidSubmitMessage() {
         return "Missing Details: albumName, artistName, priceInPence, releaseDate(yyyy-mm-dd), genre(See documentation for list)";
     }
 

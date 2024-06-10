@@ -2,9 +2,7 @@ package com.northcoders.recordshopAPI.controller;
 
 import com.northcoders.recordshopAPI.model.*;
 import com.northcoders.recordshopAPI.service.RecordShopService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +47,7 @@ public class RecordShopController {
     public ResponseEntity<Album> addNewAlbum(@RequestBody SubmittedAlbumDTO albumToAdd) {
         Album addedAlbum = recordShopService.addAlbum(albumToAdd);
         if (addedAlbum == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, recordShopService.invalidPostMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, recordShopService.invalidSubmitMessage());
         } else {
             return new ResponseEntity<>(addedAlbum, HttpStatus.CREATED);
         }
@@ -59,7 +57,7 @@ public class RecordShopController {
     public ResponseEntity<AlbumStockDTO> changeAlbum(@RequestBody SubmittedAlbumDTO albumToPut, @PathVariable int id) {
         AlbumStockDTO albumStockDTO = recordShopService.putAlbum(albumToPut, id);
         if (albumStockDTO == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error: Missing body or missing albumID");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, recordShopService.invalidSubmitMessage());
         } else {
             return new ResponseEntity<>(albumStockDTO, HttpStatus.CREATED);
         }
