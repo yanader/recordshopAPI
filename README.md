@@ -39,6 +39,8 @@ Returns a list of all albums on record.
 ```
 ##### Query Parameters
 
+The API currently only takes one query parameter at a time.
+
 | Name | Description | Type |
 |------|-------------|------|
 | name | A list of albums with the specified name. | Text |
@@ -213,7 +215,7 @@ The codebase is split into a number of packages.
    - Business logic drawing on the repository layer and supplying the controller
 4. Controller
    - Endpoint definition with custom exception handling to provide users with detailed responses
-   - Note: The API often provides priceInPounds for improved customer experience but the Stock repository holds priceInIence as an integer
+   - Note: The API often provides priceInPounds for improved customer experience but the Stock repository holds priceInPence as an integer
 
 ## Future Inclusions
 
