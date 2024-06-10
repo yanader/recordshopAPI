@@ -315,14 +315,16 @@ class RecordShopControllerTest {
 
     @Test
     void getAlbumDetailsByAlbumName() throws Exception {
-        AlbumStockDTO albumStockDTO = new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2, 10.99 );
+        List<AlbumStockDTO> albumStockDTOList = List.of(
+                new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2, 10.99 )
+        );
 
-        when(mockService.getAlbumDetailsByAlbumName("nevermind")).thenReturn(albumStockDTO);
+        when(mockService.getAlbumDetailsByAlbumName("nevermind")).thenReturn(albumStockDTOList);
 
         this.mockMvcController.perform(
                 MockMvcRequestBuilders.get("/api/v1/recordstore/albums").param("name", "nevermind"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.artistName").value("Nirvana"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].artistName").value("Nirvana"));
     }
 
     @Test
