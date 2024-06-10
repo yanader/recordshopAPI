@@ -1,10 +1,14 @@
 ----TODO----
 
+Refactor
+Make sure we are always returning DTO objects to the endpoints. (AKA all service methods should return DTOs)
+
 Bug
 GET album by name returns error if more than one album has the same name
 
-Refactor
-Make sure we are always returning DTO objects to the endpoints. (AKA all service methods should return DTOs)
+README
+
+CLI
 
 Beyond MVP
 When querying an album Id that doesn't exist, suggest an id for one that does
