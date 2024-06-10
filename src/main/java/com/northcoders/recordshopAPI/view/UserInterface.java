@@ -1,13 +1,18 @@
 package com.northcoders.recordshopAPI.view;
 
-public class UserInterface {
-    static StockSystem stockSystem = new StockSystem();
+import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
-    public static void run() {
+public class UserInterface {
+    StockSystem stockSystem = new StockSystem();
+    Scanner scanner = new Scanner(System.in);
+
+    public void run() {
         greetUser();
         while (true) {
             provideOptions();
-            int choice = stockSystem.takeUserChoice();
+            int choice = takeUserChoice();
             // Take choice of actions
             if (choice == 0) {
                 quitProgramme();
@@ -23,10 +28,9 @@ public class UserInterface {
                     break;
                 case 3:
                     viewAllInStockAlbums();
-                    // View all in-stock albums
                     break;
                 case 4:
-                    // view album by id
+                    viewAlbumDetailsById();
                     break;
                 case 5:
                     // add an album
@@ -44,21 +48,48 @@ public class UserInterface {
         }
     }
 
-    private static void greetUser() {
+    private void greetUser() {
         System.out.println("Welcome to the record store");
     }
 
-    private static void quitProgramme() {System.out.println("Thanks for visiting our record store. Goodbye!");}
+    private void quitProgramme() {System.out.println("Thanks for visiting our record store. Goodbye!");}
 
-    private static void provideOptions() {
+    private void provideOptions() {
         System.out.print(stockSystem.provideOptions());
     }
 
-    private static void viewAllAlbums() {
+    public int takeUserChoice() {
+        int choice;
+        while (true) {
+            choice = scanner.nextInt();
+            if (choice < 0 || choice >= Choice.values().length) {
+                System.out.println("Please make a valid choice");
+                continue;
+            }
+            return choice;
+        }
+    }
+
+    private void viewAllAlbums() {
         stockSystem.viewAllAlbums();
     }
 
-    private static void viewAllInStockAlbums() {
+    private void viewAllInStockAlbums() {
         stockSystem.viewAllInStockAlbums();
+    }
+    private void viewAlbumDetailsById() {
+        long id = getIdFromUser();
+        stockSystem.viewAlbumById(id);
+    }
+
+    private long getIdFromUser() {
+        while(true) {
+            System.out.println("Id of album to view:");
+            try {
+                return scanner.nextLong();
+            } catch (InputMismatchException e) {
+                System.out.println("Not a valid Id format");
+            }
+        }
     }
 }

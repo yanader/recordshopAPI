@@ -22,26 +22,13 @@ import static org.mockito.Mockito.*;
 class StockSystemTest {
 
     @Mock
-    Scanner scanner;
+    Scanner mockScanner;
 
     @Mock
     RecordShopService mockService;
 
     @InjectMocks
     StockSystem stockSystem;
-
-    @Test
-    void takeUserChoice() {
-        when(scanner.nextInt()).thenReturn(1, -1, 99, 2);
-
-        int firstChoice = stockSystem.takeUserChoice();
-        int secondChoice = stockSystem.takeUserChoice();
-
-        assertEquals(1, firstChoice);
-        assertEquals(2, secondChoice);
-
-        verify(scanner, times(4)).nextInt();
-    }
 
     @Test
     void provideOptionsBuildsStringCorrectly() {
@@ -86,5 +73,16 @@ class StockSystemTest {
 
         stockSystem.viewAllInStockAlbums();
         verify(mockService, times(1)).getAllInStockAlbums();
+    }
+
+    @Test
+    void viewAlbumByIdCallsService() {
+        AlbumStockDTO albumStockDTO = new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2 , 12.99);
+
+        when(mockService.getAlbumDTOById(1)).thenReturn(albumStockDTO);
+
+        stockSystem.viewAlbumById(1L);
+        verify(mockService, times(1)).getAlbumDTOById(1);
+
     }
 }

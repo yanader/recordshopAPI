@@ -31,16 +31,9 @@ public class StockSystem {
         }
     }
 
-    public int takeUserChoice() {
-        int choice;
-        while (true) {
-            choice = scanner.nextInt();
-            if (choice < 0 || choice >= Choice.values().length) {
-                System.out.println("Please make a valid choice");
-                continue;
-            }
-            return choice;
-        }
+    public void viewAlbumById(long id) {
+        AlbumStockDTO album = recordShopService.getAlbumDTOById((int)id);
+        System.out.println(album);
     }
 
     public String provideOptions() {
