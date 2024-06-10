@@ -22,4 +22,11 @@ public class AlbumDTO {
         this.releaseDate = album.getReleaseDate();
         this.genre = album.getGenre();
     }
+
+    @Override
+    public String toString() {
+        return "id: " + "\t" + this.albumId + " | " +
+                this.albumName + " - " + this.artistName + " | " +
+                this.releaseDate + " - " + this.genre.name();
+    }
 }

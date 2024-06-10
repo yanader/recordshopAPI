@@ -1,13 +1,34 @@
 package com.northcoders.recordshopAPI.view;
 
+import com.northcoders.recordshopAPI.model.AlbumDTO;
+import com.northcoders.recordshopAPI.model.AlbumStockDTO;
+import com.northcoders.recordshopAPI.service.RecordShopService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class StockSystem {
 
     private Scanner scanner;
 
-    public StockSystem() {
-        this.scanner = new Scanner(System.in);
+    @Autowired
+    private RecordShopService recordShopService;
+
+    public StockSystem() {this.scanner = new Scanner(System.in);}
+
+    public void viewAllAlbums() {
+        List<AlbumDTO> albumList = recordShopService.getAllAlbums();
+        for (AlbumDTO album : albumList) {
+            System.out.println(album);
+        }
+    }
+
+    public void viewAllInStockAlbums() {
+        List<AlbumStockDTO> albumStockDTOList = recordShopService.getAllInStockAlbums();
+        for (AlbumStockDTO album : albumStockDTOList) {
+            System.out.println(album);
+        }
     }
 
     public int takeUserChoice() {

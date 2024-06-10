@@ -1,11 +1,18 @@
 package com.northcoders.recordshopAPI.view;
 
+import com.northcoders.recordshopAPI.model.Album;
+import com.northcoders.recordshopAPI.model.AlbumDTO;
+import com.northcoders.recordshopAPI.model.AlbumStockDTO;
+import com.northcoders.recordshopAPI.model.Genre;
+import com.northcoders.recordshopAPI.service.RecordShopService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +23,9 @@ class StockSystemTest {
 
     @Mock
     Scanner scanner;
+
+    @Mock
+    RecordShopService mockService;
 
     @InjectMocks
     StockSystem stockSystem;
@@ -49,5 +59,32 @@ class StockSystemTest {
                 """;
 
         assertEquals(result, stockSystem.provideOptions());
+    }
+
+    @Test
+    void viewAllAlbumsCallsServiceMethod() {
+        List<AlbumDTO> albumDTOList = List.of(
+                new AlbumDTO(new Album(1L, "Nevermind", "Nirvana", LocalDate.EPOCH, Genre.ROCK)),
+                new AlbumDTO(new Album(1L, "Artpop", "Lady Gaga", LocalDate.EPOCH, Genre.POP))
+        );
+
+        when(mockService.getAllAlbums()).thenReturn(albumDTOList);
+
+        stockSystem.viewAllAlbums();
+        verify(mockService, times(1)).getAllAlbums();
+    }
+
+    @Test
+    void viewAllInStockAlbumsCallsServiceMethod() {
+        List<AlbumStockDTO> albumStockDTOList = List.of(
+                new AlbumStockDTO(1L, "Nevermind", "Nirvana", 2 , 12.99),
+                new AlbumStockDTO(2L,"Owls", "Owls", 4, 14.99),
+                new AlbumStockDTO(3L, "One More Time", "Britney Spears", 1, 24.99)
+        );
+
+        when(mockService.getAllInStockAlbums()).thenReturn(albumStockDTOList);
+
+        stockSystem.viewAllInStockAlbums();
+        verify(mockService, times(1)).getAllInStockAlbums();
     }
 }
