@@ -32,4 +32,22 @@ class StockSystemTest {
 
         verify(scanner, times(4)).nextInt();
     }
+
+    @Test
+    void provideOptionsBuildsStringCorrectly() {
+        String result = """
+                What would you like to do today?
+                \t1. View all albums
+                \t2. View all albums with filter
+                \t3. View all in-stock albums
+                \t4. View album by id
+                \t5. Add an album
+                \t6. Update an album (whole)
+                \t7. Update an album (partial)
+                \t8. Delete an album
+                \t0. Quit
+                """;
+
+        assertEquals(result, stockSystem.provideOptions());
+    }
 }
