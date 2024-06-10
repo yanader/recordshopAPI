@@ -2,6 +2,8 @@
 
 README
 
+Capitalisation causing bug in POST
+
 CLI
 
 Beyond MVP

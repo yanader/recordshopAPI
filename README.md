@@ -10,20 +10,53 @@ This API currently works without authentication (on trust).
 
 ### base uri
 
-```http://?localhost:8080/api/v1/recordstore```
+```http://localhost:8080/api/v1/recordstore```
 
 The base endpoint for this service.
 
 ### Endpoints
 
 #### GET ```/albums```
+
+
 #### GET ```/instock```
+Returns a list of in-stock albums
+```json[
+{
+"albumId": 1,
+"albumName": "Zuma",
+"artistName": "Neil young",
+"quantity": 2,
+"priceInPounds": 15.0
+},
+{
+"albumId": 2,
+"albumName": "Close to the edge",
+"artistName": "Yes",
+"quantity": 3,
+"priceInPounds": 17.0
+}
+]
+```
+
 #### GET ```/albums/{id}```
+
+
 #### POST ```/albums/add```
+
+
 #### PUT ```/albums/{id}```
+
+
 #### DELETE ```/albums/{id}```
+
+
 #### PATCH ```/albums/{id}```
+
+
 #### GET ```/health```
+Standard /health endpoint supplied through Spring Actuator via redirect
+
 
 ## Documentation
 
