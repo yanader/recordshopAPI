@@ -33,7 +33,11 @@ public class StockSystem {
 
     public void viewAlbumById(long id) {
         AlbumStockDTO album = recordShopService.getAlbumDTOById((int)id);
-        System.out.println(album);
+        if (album == null) {
+            System.out.println("No album with id " + id + " exists.");
+        } else {
+            System.out.println(album);
+        }
     }
 
     public String provideOptions() {

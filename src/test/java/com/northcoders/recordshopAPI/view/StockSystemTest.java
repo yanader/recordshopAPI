@@ -83,6 +83,7 @@ class StockSystemTest {
 
         stockSystem.viewAlbumById(1L);
         verify(mockService, times(1)).getAlbumDTOById(1);
-
     }
+
+
 }
