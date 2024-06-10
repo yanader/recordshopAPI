@@ -17,10 +17,48 @@ The base endpoint for this service.
 ### Endpoints
 
 #### GET ```/albums```
+Returns a list of all albums on record.
+```json
+[
+    {
+        "albumId": 1,
+        "albumName": "Zuma",
+        "artistName": "Neil Young",
+        "releaseDate": "1975-11-10",
+        "genre": "ROCK"
+    },
+...
+    {
+        "albumId": 5,
+        "albumName": "Artpop",
+        "artistName": "Lady Gaga",
+        "releaseDate": "2013-11-06",
+        "genre": "POP"
+    }
+]
+```
+##### Query Parameters
+
+| Name | Description | Type |
+|------|-------------|------|
+| name | A list of albums with the specified name. | Text |
+| artistname | A list of albums by the specified artist. | Text |
+| year | A list of albums released in the given year | Number |
+| genre | A list of albums of the given genre | Category (See below) |
+
+| Genres |
+|--------|
+| ROCK |
+| POP |
+| COUNTRY |
+| JAZZ |
+| CLASSICAL |
+| DANCE |
+| SOUL |
 
 
 #### GET ```/instock```
-Returns a list of in-stock albums
+Returns a list of in-stock albums. 
 ```json
 [
    {
@@ -41,7 +79,22 @@ Returns a list of in-stock albums
 ```
 
 #### GET ```/albums/{id}```
-
+Returns album information based on its id or advises an album doesn't exist.
+```json
+{
+    "albumId": 1,
+    "albumName": "Zuma",
+    "artistName": "Neil young",
+    "quantity": 2,
+    "priceInPounds": 15.0
+}
+```
+```json
+{
+    "status": 404,
+    "message": "No album with id 3 exists"
+}
+```
 
 #### POST ```/albums/add```
 
@@ -72,6 +125,7 @@ The codebase is split into a number of packages.
    - Business logic drawing on the repository layer and supplying the controller
 4. Controller
    - Endpoint definition with custom exception handling to provide users with detailed responses
+   - Note: The API often provides priceInPounds for improved customer experience but the Stock repository holds priceInIence as an integer
 
 ## Future Inclusions
 
