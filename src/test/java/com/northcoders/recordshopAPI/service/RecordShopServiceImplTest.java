@@ -104,11 +104,11 @@ class RecordShopServiceImplTest {
 
     @Test
     void postAlbumFindsExistingAlbumAndUpdatesStock() {
-        SubmittedAlbumDTO submittedAlbumDTO = new SubmittedAlbumDTO("Nevermind", "Nirvana", 1099, LocalDate.now(), Genre.ROCK);
-        Optional<Album> optionalAlbumToPost = Optional.of(new Album(0L,"Nevermind", "Nirvana", LocalDate.now(), Genre.ROCK ));
+        SubmittedAlbumDTO submittedAlbumDTO = new SubmittedAlbumDTO("nevermind", "nirvana", 1099, LocalDate.now(), Genre.ROCK);
+        Optional<Album> optionalAlbumToPost = Optional.of(new Album(0L,"Nevermind", "nirvana", LocalDate.now(), Genre.ROCK ));
         Optional<Stock> optionalStock = Optional.of(new Stock(0L, 0L, 1099, 5));
 
-        when(mockAlbumRepository.findByAlbumNameAndArtistName("Nevermind", "Nirvana")).thenReturn(optionalAlbumToPost);
+        when(mockAlbumRepository.findByAlbumNameAndArtistName("nevermind", "nirvana")).thenReturn(optionalAlbumToPost);
         // Album actualAlbum = optionalAlbumToPost.get();
 
         when(mockStockRepository.findAllByAlbumId(0L)).thenReturn(optionalStock);
@@ -120,7 +120,7 @@ class RecordShopServiceImplTest {
         assertNotNull(addedAlbum);
         assertEquals(6, stock.getNumberInStock());
 
-        verify(mockAlbumRepository, times(1)).findByAlbumNameAndArtistName("Nevermind", "Nirvana");
+        verify(mockAlbumRepository, times(1)).findByAlbumNameAndArtistName("nevermind", "nirvana");
         verify(mockStockRepository, times(1)).findAllByAlbumId(0L);
     }
 

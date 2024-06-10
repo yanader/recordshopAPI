@@ -45,7 +45,7 @@ public class RecordShopServiceImpl implements RecordShopService{
     public Album addAlbum(SubmittedAlbumDTO albumToPost) {
         if (!submittedAlbumIsValid(albumToPost)) return null;
 
-        Optional<Album> optionalAlbumToAdd = albumRepository.findByAlbumNameAndArtistName(albumToPost.getAlbumName(), albumToPost.getArtistName());
+        Optional<Album> optionalAlbumToAdd = albumRepository.findByAlbumNameAndArtistName(albumToPost.getAlbumName().toLowerCase(), albumToPost.getArtistName().toLowerCase());
         Optional<Stock> optionalStockToAdd = Optional.empty();
 
         if (optionalAlbumToAdd.isPresent()) {
@@ -55,7 +55,7 @@ public class RecordShopServiceImpl implements RecordShopService{
         Album addedAlbum = null;
 
         if(optionalAlbumToAdd.isEmpty()) {
-            addedAlbum = albumRepository.save(new Album(albumToPost.getAlbumName(), albumToPost.getArtistName(), albumToPost.getReleaseDate(), albumToPost.getGenre()));
+            addedAlbum = albumRepository.save(new Album(albumToPost.getAlbumName().toLowerCase(), albumToPost.getArtistName().toLowerCase(), albumToPost.getReleaseDate(), albumToPost.getGenre()));
             stockRepository.save(new Stock(addedAlbum.getAlbumId(), albumToPost.getPriceInPence(), 1));
         } else {
             Stock stock = optionalStockToAdd.get();
