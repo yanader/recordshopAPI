@@ -8,15 +8,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class RecordShopServiceImplTest {
 
     @Mock
@@ -27,7 +35,6 @@ class RecordShopServiceImplTest {
 
     @InjectMocks
     RecordShopServiceImpl service;
-
 
     @Test
     void getAllAlbums() {
@@ -427,8 +434,5 @@ class RecordShopServiceImplTest {
         verify(mockStockRepository, times(0)).findAllByAlbumId(anyInt());
         verify(mockStockRepository, times(0)).save(any(Stock.class));
         verify(mockAlbumRepository, times(0)).save(any(Album.class));
-
     }
-
-
 }

@@ -5,6 +5,10 @@ import com.northcoders.recordshopAPI.repository.AlbumRepository;
 import com.northcoders.recordshopAPI.repository.StockRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,6 +26,9 @@ public class RecordShopServiceImpl implements RecordShopService{
     @Autowired
     StockRepository stockRepository;
 
+    @Autowired
+    CacheManager cacheManager;
+
     @Override
     public List<AlbumDTO> getAllAlbums() {
         List<Album> albumList = new ArrayList<>();
@@ -36,7 +43,9 @@ public class RecordShopServiceImpl implements RecordShopService{
     }
 
     @Override
+    @Cacheable("albums")
     public AlbumStockDTO getAlbumDTOById(int id) {
+        System.out.println("querying database");
         Optional<AlbumStockDTO> optional = albumRepository.getAlbumDTOById(id);
         return optional.orElse(null);
     }
@@ -67,6 +76,7 @@ public class RecordShopServiceImpl implements RecordShopService{
     }
 
     @Override
+    @CacheEvict(value="albums", allEntries = true)
     public AlbumStockDTO putAlbum(SubmittedAlbumDTO albumToPut, int idToPutAt) {
         if (!submittedAlbumIsValid(albumToPut)) return null;
         if (!albumRepository.existsById(idToPutAt)) return null;
@@ -85,6 +95,7 @@ public class RecordShopServiceImpl implements RecordShopService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "albums", allEntries = true)
     public boolean deleteById(int id) {
         if(!albumRepository.existsById(id)) return false;
         albumRepository.deleteById(id);
@@ -129,6 +140,7 @@ public class RecordShopServiceImpl implements RecordShopService{
     }
 
     @Override
+    @CacheEvict(value="albums", allEntries = true)
     public Album updateAlbumDetails(long id, UpdateAlbumDTO updates) {
         if (!albumRepository.existsById((int)id)) return null;
         Optional<Album> optionalAlbum = albumRepository.findById((int)id);
@@ -158,6 +170,13 @@ public class RecordShopServiceImpl implements RecordShopService{
 
     public String invalidSubmitMessage() {
         return "Missing Details: albumName, artistName, priceInPence, releaseDate(yyyy-mm-dd), genre(See documentation for list)";
+    }
+
+    @CacheEvict(value="albums")
+    @Scheduled(fixedRate = 10000, initialDelay = 10000)
+    public void evictAllCacheValues(){
+        System.out.println(" 10 SECONDS ");
+        cacheManager.getCache("albums").clear();
     }
 
 
