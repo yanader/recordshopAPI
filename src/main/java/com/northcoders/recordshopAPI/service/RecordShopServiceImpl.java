@@ -45,7 +45,6 @@ public class RecordShopServiceImpl implements RecordShopService{
     @Override
     @Cacheable("albums")
     public AlbumStockDTO getAlbumDTOById(int id) {
-        System.out.println("querying database");
         Optional<AlbumStockDTO> optional = albumRepository.getAlbumDTOById(id);
         return optional.orElse(null);
     }
@@ -175,7 +174,6 @@ public class RecordShopServiceImpl implements RecordShopService{
     @CacheEvict(value="albums")
     @Scheduled(fixedRate = 10000, initialDelay = 10000)
     public void evictAllCacheValues(){
-        System.out.println(" 10 SECONDS ");
         cacheManager.getCache("albums").clear();
     }
 
