@@ -34,3 +34,5 @@ build/
 
 ### Auth/Properties ###
 src/main/resources/*.properties
+
+*.zip
